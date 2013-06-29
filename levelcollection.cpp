@@ -1,0 +1,32 @@
+#include "levelcollection.h"
+
+LevelCollection::LevelCollection(QString name, QByteArray collectionData)
+{
+	name_ = name;
+
+	while (!collectionData.isEmpty())
+	{
+		int separator = collectionData.indexOf('\0');
+		if (separator == -1)
+			break; //No more levels
+		Level *l = new Level(collectionData.left(separator));
+		levels_.append(l);
+		collectionData.remove(0, separator + 1);
+	}
+}
+
+LevelCollection::~LevelCollection()
+{
+	while (!levels_.isEmpty())
+		delete levels_.takeFirst();
+}
+
+QString LevelCollection::name() const
+{
+	return name_;
+}
+
+const QList<Level *> LevelCollection::levels() const
+{
+	return levels_;
+}

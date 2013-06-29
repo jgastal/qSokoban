@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>levels/sasquatch.data</file>
+    </qresource>
+</RCC>
