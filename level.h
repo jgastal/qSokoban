@@ -22,6 +22,7 @@ class Level : public QAbstractItemModel
 {
 	Q_OBJECT
 	Q_PROPERTY(QPoint manPos READ manPos WRITE setManPos NOTIFY manMoved)
+	Q_PROPERTY(QVariantList boxes READ boxes NOTIFY boxMoved)
 	public:
 		enum Tile {
 			WALL,
@@ -36,6 +37,7 @@ class Level : public QAbstractItemModel
 		int height() const;
 		QPoint manPos() const;
 		void setManPos(QPoint p);
+		QVariantList boxes() const;
 
 		//Item model methods
 		int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -47,6 +49,7 @@ class Level : public QAbstractItemModel
 
 	signals:
 		void manMoved(QPoint newPos);
+		void boxMoved(QList<QPoint> newBoxesPos);
 
 	private:
 		QVector<QVector<Tile>> board_;
@@ -54,7 +57,6 @@ class Level : public QAbstractItemModel
 		QList<QPoint> boxesPos_;
 		int width_, height_;
 		static const int tileImageRole;
-		static const int tileObjectImageRole;
 };
 
 #endif // LEVEL_H

@@ -5,8 +5,8 @@
         <file>images/man.png</file>
         <file>images/box_destination.png</file>
         <file>images/floor.png</file>
-        <file>images/object.png</file>
         <file>images/outside.png</file>
         <file>images/wall.png</file>
+        <file>images/box.png</file>
     </qresource>
 </RCC>

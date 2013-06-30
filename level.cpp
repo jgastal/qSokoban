@@ -12,7 +12,6 @@ const char *BadLevelDescription::what() const throw()
 }
 
 const int Level::tileImageRole = Qt::UserRole + 1;
-const int Level::tileObjectImageRole = Qt::UserRole + 2;
 
 Level::Level(QByteArray data) : width_(0), height_(0)
 {
@@ -150,10 +149,32 @@ void Level::setManPos(QPoint p)
 {
 	if (board_[p.x()][p.y()] == WALL)
 		return;
+	if (boxesPos_.contains(p))
+	{
+		int dx, dy;
+		int idx = boxesPos_.indexOf(p);
+		dx = p.x() - manPos_.x();
+		dy = p.y() - manPos_.y();
+		if (board_[p.x() + dx][p.y() + dy] == WALL) //Object can't go past wall
+			return;
+		if (boxesPos_.contains(QPoint(p.x() + dx, p.y() + dy))) //Objects can't go into each other
+			return;
+		boxesPos_[idx].rx() += dx;
+		boxesPos_[idx].ry() += dy;
+		emit boxMoved(boxesPos_);
+		//TODO check win condition
+	}
 	manPos_.rx() = p.x();
 	manPos_.ry() = p.y();
-	//TODO move objects
 	emit manMoved(manPos_);
+}
+
+QVariantList Level::boxes() const
+{
+	QVariantList ret;
+	for(auto p : boxesPos_)
+		ret.append(QVariant(p));
+	return ret;
 }
 
 int Level::rowCount(UNUSED const QModelIndex &parent) const
@@ -190,9 +211,6 @@ QVariant Level::data(const QModelIndex &index, int role) const
 				case NEW_ROW:
 					return QVariant();
 			}
-		case tileObjectImageRole:
-			if (boxesPos_.contains(QPoint(x, y)))
-				return QVariant("qrc:/images/object.png");
 		default:
 			return QVariant();
 	}
@@ -202,7 +220,6 @@ QHash<int, QByteArray> Level::roleNames() const
 {
 	QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
 	roles.insert(tileImageRole, QByteArray("tileImage"));
-	roles.insert(tileObjectImageRole, QByteArray("tileObjectImage"));
 	return roles;
 }
 

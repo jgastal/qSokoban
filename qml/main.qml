@@ -8,19 +8,25 @@ Item {
 		anchors.fill: parent
 		cellHeight: 64
 		cellWidth: 64
-		delegate: Item{
+		delegate: Item {
 			Image {
 				width: 64
 				height: 64
 				source: model.tileImage
 			}
-			Image {
-				width: 64
-				height: 64
-				source: model.tileObjectImage ? model.tileObjectImage : ""
-			}
 		}
 	}
+	Repeater {
+		model: level.boxes
+		Image {
+			x: modelData.x * 64
+			y: modelData.y * 64
+			width: 64
+			height: 64
+			source: "qrc:/images/box.png"
+		}
+	}
+
 	Image {
 		x: level.manPos.x * 64
 		y: level.manPos.y * 64
