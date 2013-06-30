@@ -50,6 +50,7 @@ class Level : public QAbstractItemModel
 	signals:
 		void manMoved(QPoint newPos);
 		void boxMoved(QList<QPoint> newBoxesPos);
+		void levelCompleted();
 
 	private:
 		QVector<QVector<Tile>> board_;

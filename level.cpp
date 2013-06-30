@@ -153,6 +153,7 @@ void Level::setManPos(QPoint p)
 	{
 		int dx, dy;
 		int idx = boxesPos_.indexOf(p);
+		bool won = true;
 		dx = p.x() - manPos_.x();
 		dy = p.y() - manPos_.y();
 		if (board_[p.x() + dx][p.y() + dy] == WALL) //Object can't go past wall
@@ -162,7 +163,11 @@ void Level::setManPos(QPoint p)
 		boxesPos_[idx].rx() += dx;
 		boxesPos_[idx].ry() += dy;
 		emit boxMoved(boxesPos_);
-		//TODO check win condition
+		for(auto p : boxesPos_)
+			if (board_[p.x()][p.y()] != BOX_DESTINATION)
+				won = false;
+		if (won)
+			emit levelCompleted();
 	}
 	manPos_.rx() = p.x();
 	manPos_.ry() = p.y();
