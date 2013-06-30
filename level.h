@@ -4,6 +4,7 @@
 #include <QList>
 #include <QPoint>
 #include <QByteArray>
+#include <QAbstractItemModel>
 #include <stdexcept>
 #include <string>
 
@@ -17,8 +18,10 @@ class BadLevelDescription : public std::exception
 		char bad_;
 };
 
-class Level
+class Level : public QAbstractItemModel
 {
+	Q_OBJECT
+	Q_PROPERTY(QPoint manPos READ manPos WRITE setManPos NOTIFY manMoved)
 	public:
 		enum Tile {
 			WALL,
@@ -29,11 +32,29 @@ class Level
 		};
 		Level(QByteArray data);
 		QByteArray serialize() const;
-		
+		int width() const;
+		int height() const;
+		QPoint manPos() const;
+		void setManPos(QPoint p);
+
+		//Item model methods
+		int rowCount(const QModelIndex &parent = QModelIndex()) const;
+		QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+		int columnCount(const QModelIndex &parent = QModelIndex()) const;
+		QHash<int, QByteArray> roleNames() const;
+		QModelIndex index(int row, int column, const QModelIndex &parent) const;
+		QModelIndex parent(const QModelIndex &child) const;
+
+	signals:
+		void manMoved(QPoint newPos);
+
 	private:
-		QList<Tile> board_;
-		QPoint moverPos_;
+		QVector<QVector<Tile>> board_;
+		QPoint manPos_;
 		QList<QPoint> boxesPos_;
+		int width_, height_;
+		static const int tileImageRole;
+		static const int tileObjectImageRole;
 };
 
 #endif // LEVEL_H

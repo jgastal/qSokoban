@@ -1,5 +1,7 @@
 QMAKE_CXXFLAGS += -std=c++0x
 
+QT += qml quick
+
 HEADERS += \
     level.h \
     levelcollection.h
@@ -10,4 +12,6 @@ SOURCES += \
     levelcollection.cpp
 
 RESOURCES += \
-    levels.qrc
+    data.qrc
+
+OTHER_FILES += qml/main.qml

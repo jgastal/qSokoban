@@ -3,12 +3,15 @@
 #include <QFileInfoList>
 #include <QFile>
 #include <QDebug>
+#include <QQuickView>
+#include <QQuickItem>
+#include <QQmlContext>
 
 #include "levelcollection.h"
 
 int main(int argc, char **argv)
 {
-//	QGuiApplication app(argc, argv);
+	QGuiApplication app(argc, argv);
 	QDir levelsDir(":/levels/");
 	QFileInfoList collectionFiles = levelsDir.entryInfoList();
 	QList<LevelCollection*> collections;
@@ -25,6 +28,14 @@ int main(int argc, char **argv)
 			qWarning() << "Empty collection found: " << f.fileName();
 	}
 
-//	return app.exec();
-	return 0;
+	Level *l = collections.first()->levels().first();
+	QQuickView viewer;
+	viewer.rootContext()->setContextProperty("level", l);
+	viewer.setSource(QStringLiteral("qrc:/qml/main.qml"));
+	viewer.rootObject()->setWidth(64 * l->width());
+	viewer.rootObject()->setHeight(64 * l->height());
+	viewer.resize(64 * l->width(), 64 * l->height());
+	viewer.show();
+
+	return app.exec();
 }
