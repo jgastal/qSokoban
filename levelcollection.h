@@ -20,6 +20,9 @@ class LevelCollection : public QObject
 		const QList<Level*> levels() const;
 		Level *currentLevel() const;
 		bool nextLevelUnlocked() const;
+		int maxUnlockedLevel() const;
+		void setMaxUnlockedLevel(int level);
+		void setCurrentLevel(int level);
 
 	public slots:
 		bool hasPreviousLevel();

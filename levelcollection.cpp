@@ -42,6 +42,25 @@ bool LevelCollection::nextLevelUnlocked() const
 	return currentLevel_ + 1 <= maxUnlockedLevel_;
 }
 
+int LevelCollection::maxUnlockedLevel() const
+{
+	return maxUnlockedLevel_;
+}
+
+void LevelCollection::setMaxUnlockedLevel(int level)
+{
+	maxUnlockedLevel_ = level;
+}
+
+void LevelCollection::setCurrentLevel(int level)
+{
+	currentLevel_ = level;
+	emit currentLevelChanged();
+	levels_.at(currentLevel_)->reset();
+	//Making sure next button's state is recalculated
+	emit unlockedLevelChanged();
+}
+
 void LevelCollection::unlockNextLevel()
 {
 	++maxUnlockedLevel_;
