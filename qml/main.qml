@@ -28,6 +28,8 @@ Item {
 		height: 64
 		focus: true
 		source: "qrc:/images/man.png"
+		Behavior on x { SmoothedAnimation { velocity: 400; } }
+		Behavior on y { SmoothedAnimation { velocity: 400; } }
 		Keys.onDownPressed: {
 			level.manPos.y += 1
 		}
