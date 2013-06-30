@@ -142,6 +142,7 @@ QPoint Level::manPos() const
 
 void Level::setManPos(QPoint p)
 {
+	Movement mv;
 	if (board_[p.x()][p.y()] == WALL)
 		return;
 	if (boxesPos_.contains(p))
@@ -157,6 +158,9 @@ void Level::setManPos(QPoint p)
 			return;
 		boxesPos_[idx].rx() += dx;
 		boxesPos_[idx].ry() += dy;
+		mv.box = boxesPos_[idx];
+		mv.boxdx = -1 * dx;
+		mv.boxdy = -1 * dy;
 		emit boxMoved(boxesPos_);
 		++pushes_;
 		emit pushed();
@@ -166,6 +170,10 @@ void Level::setManPos(QPoint p)
 		if (won)
 			emit levelCompleted();
 	}
+	mv.mandx = manPos_.x() - p.x();
+	mv.mandy = manPos_.y() - p.y();
+	undoStack_.push(mv);
+	emit undoStackChanged();
 	manPos_.rx() = p.x();
 	manPos_.ry() = p.y();
 	emit manMoved(manPos_);
@@ -179,6 +187,11 @@ QVariantList Level::boxes() const
 	for(auto p : boxesPos_)
 		ret.append(QVariant(p));
 	return ret;
+}
+
+bool Level::canUndo() const
+{
+	return !undoStack_.isEmpty();
 }
 
 int Level::rowCount(UNUSED const QModelIndex &parent) const
@@ -235,4 +248,24 @@ QModelIndex Level::index(int row, int column, UNUSED const QModelIndex &parent) 
 QModelIndex Level::parent(UNUSED const QModelIndex &child) const
 {
 	return QModelIndex();
+}
+
+void Level::undo()
+{
+	Movement mv = undoStack_.pop();
+	int idx = boxesPos_.indexOf(mv.box);
+	manPos_.rx() += mv.mandx;
+	manPos_.ry() += mv.mandy;
+	emit manMoved(manPos_);
+	--steps_;
+	emit steped();
+	if (idx != -1)
+	{
+		boxesPos_[idx].rx() += mv.boxdx;
+		boxesPos_[idx].ry() += mv.boxdy;
+		emit boxMoved(boxesPos_);
+		--pushes_;
+		emit pushed();
+	}
+	emit undoStackChanged();
 }

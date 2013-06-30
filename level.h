@@ -5,6 +5,7 @@
 #include <QPoint>
 #include <QByteArray>
 #include <QAbstractItemModel>
+#include <QStack>
 #include <stdexcept>
 #include <string>
 
@@ -18,6 +19,12 @@ class BadLevelDescription : public std::exception
 		char bad_;
 };
 
+struct Movement {
+	int mandx, mandy;
+	int boxdx, boxdy;
+	QPoint box;
+};
+
 class Level : public QAbstractItemModel
 {
 	Q_OBJECT
@@ -27,6 +34,7 @@ class Level : public QAbstractItemModel
 	Q_PROPERTY(int height MEMBER height_ NOTIFY sizeChanged)
 	Q_PROPERTY(int steps MEMBER steps_ NOTIFY steped);
 	Q_PROPERTY(int pushes MEMBER pushes_ NOTIFY pushed);
+	Q_PROPERTY(bool canUndo READ canUndo NOTIFY undoStackChanged);
 
 	public:
 		enum Tile {
@@ -42,6 +50,7 @@ class Level : public QAbstractItemModel
 		QPoint manPos() const;
 		void setManPos(QPoint p);
 		QVariantList boxes() const;
+		bool canUndo() const;
 
 		//Item model methods
 		int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -51,6 +60,9 @@ class Level : public QAbstractItemModel
 		QModelIndex index(int row, int column, const QModelIndex &parent) const;
 		QModelIndex parent(const QModelIndex &child) const;
 
+	public slots:
+		void undo();
+
 	signals:
 		void manMoved(QPoint newPos);
 		void boxMoved(QList<QPoint> newBoxesPos);
@@ -58,6 +70,7 @@ class Level : public QAbstractItemModel
 		void sizeChanged(int width, int height);
 		void steped();
 		void pushed();
+		void undoStackChanged();
 
 	private:
 		QVector<QVector<Tile>> board_;
@@ -66,6 +79,7 @@ class Level : public QAbstractItemModel
 		int width_, height_;
 		int steps_, pushes_;
 		static const int tileImageRole;
+		QStack<Movement> undoStack_;
 };
 
 #endif // LEVEL_H

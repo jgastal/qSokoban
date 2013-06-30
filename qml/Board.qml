@@ -14,6 +14,10 @@ Item {
 	Keys.onRightPressed: {
 		collection.currentLevel.manPos.x += 1
 	}
+	Keys.onPressed: {
+		if (event.key == Qt.Key_Z && event.modifiers == Qt.ControlModifier && collection.currentLevel.canUndo)
+			collection.currentLevel.undo();
+	}
 
 	GridView {
 		id: map

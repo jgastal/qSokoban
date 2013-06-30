@@ -19,7 +19,6 @@ TODO
  * Put proper icons in buttons
  * Implement choosing level collection
  * Don't animate man movement when changing levels
- * Implement undo
  * Handle empty spaces in between walls as OUTSIDE
  * Notify user he has won when level is completed
  * Handle reaching the end of the collection

@@ -19,6 +19,13 @@ ApplicationWindow {
 			}
 
 			Button {
+				text: "Undo"
+				iconName: "undo"
+				enabled: collection.currentLevel.canUndo
+				onClicked: collection.currentLevel.undo()
+			}
+
+			Button {
 				id: prevButton
 				text: "Previous level"
 				iconName: "previous"
