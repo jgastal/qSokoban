@@ -52,10 +52,14 @@ void LevelCollection::nextLevel()
 {
 	++currentLevel_;
 	emit currentLevelChanged();
+	//Making sure next button's state is recalculated
+	emit unlockedLevelChanged();
 }
 
 void LevelCollection::previousLevel()
 {
 	--currentLevel_;
 	emit currentLevelChanged();
+	//Making sure next button's state is recalculated
+	emit unlockedLevelChanged();
 }
