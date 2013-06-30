@@ -34,6 +34,7 @@ ApplicationWindow {
 				id: quitButton
 				text: "Quit"
 				iconName: "quit"
+				onClicked: Qt.quit()
 			}
 		}
 	}
