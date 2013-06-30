@@ -13,8 +13,9 @@ ApplicationWindow {
 
 		RowLayout {
 			Button {
-				text: "Restart"
-				iconName: "restart"
+				text: "Reset"
+				iconName: "reset"
+				onClicked: collection.currentLevel.reset()
 			}
 
 			Button {

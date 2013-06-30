@@ -14,8 +14,6 @@ The goal of the game is to move all the red gems to the green marked spots.
 
 TODO
 ====
- * Set level to initial state when changing levels
- * Implement functionality of restart button
  * Put proper icons in buttons
  * Implement choosing level collection
  * Don't animate man movement when changing levels

@@ -269,3 +269,9 @@ void Level::undo()
 	}
 	emit undoStackChanged();
 }
+
+void Level::reset()
+{
+	while (!undoStack_.isEmpty())
+		undo();
+}
