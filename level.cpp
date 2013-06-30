@@ -68,7 +68,7 @@ Level::Level(QByteArray data) : width_(0), height_(0)
 		switch (tiles.at(i))
 		{
 			case FLOOR:
-				if (lineHasWall)
+				if (lineHasWall) //TODO doesn't account for OUTSIDE in middle of line
 					board_[x][y] = FLOOR;
 				break;
 			case WALL:
