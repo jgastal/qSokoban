@@ -13,7 +13,7 @@ const char *BadLevelDescription::what() const throw()
 
 const int Level::tileImageRole = Qt::UserRole + 1;
 
-Level::Level(QByteArray data) : width_(0), height_(0)
+Level::Level(QByteArray data) : width_(0), height_(0), steps_(0), pushes_(0)
 {
 	QList<Tile> tiles;
 	for (int i = 0, x = 0; i < data.size(); ++i, ++x)
@@ -154,6 +154,8 @@ void Level::setManPos(QPoint p)
 		boxesPos_[idx].rx() += dx;
 		boxesPos_[idx].ry() += dy;
 		emit boxMoved(boxesPos_);
+		++pushes_;
+		emit pushed();
 		for(auto p : boxesPos_)
 			if (board_[p.x()][p.y()] != BOX_DESTINATION)
 				won = false;
@@ -163,6 +165,8 @@ void Level::setManPos(QPoint p)
 	manPos_.rx() = p.x();
 	manPos_.ry() = p.y();
 	emit manMoved(manPos_);
+	++steps_;
+	emit steped();
 }
 
 QVariantList Level::boxes() const

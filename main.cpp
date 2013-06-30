@@ -29,9 +29,8 @@ int main(int argc, char **argv)
 			qWarning() << "Empty collection found: " << f.fileName();
 	}
 
-	Level *l = collections.first()->levels().first();
-
-	engine.rootContext()->setContextProperty("level", l);
+	engine.rootContext()->setContextProperty("collection", collections.first());
+	engine.rootContext()->setContextProperty("level", collections.first()->levels().first());
 	engine.load(QUrl("qrc:/qml/main.qml"));
 
 	return app.exec();

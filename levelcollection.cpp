@@ -1,8 +1,8 @@
 #include "levelcollection.h"
 
-LevelCollection::LevelCollection(QString name, QByteArray collectionData)
+LevelCollection::LevelCollection(QString name, QByteArray collectionData) : currentLevel_(0)
 {
-	name_ = name;
+	setObjectName(name);
 
 	while (!collectionData.isEmpty())
 	{
@@ -21,12 +21,12 @@ LevelCollection::~LevelCollection()
 		delete levels_.takeFirst();
 }
 
-QString LevelCollection::name() const
-{
-	return name_;
-}
-
 const QList<Level *> LevelCollection::levels() const
 {
 	return levels_;
+}
+
+Level *LevelCollection::currentLevel() const
+{
+	return levels_.at(currentLevel_);
 }

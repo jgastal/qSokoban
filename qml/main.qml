@@ -42,22 +42,16 @@ ApplicationWindow {
 
 		RowLayout {
 			Label {
-				id: collectionInfo
+				text: collection.objectName
 			}
 			Label {
-				text: "Level:"
+				text: "Level:" + collection.currentLevel
 			}
 			Label {
-				text: "Steps:"
+				text: "Steps:" + level.steps
 			}
 			Label {
-				text: "Steps:"
-			}
-			Label {
-				text: "pushes:"
-			}
-			Label {
-				text: "pushes:"
+				text: "pushes:"  + level.pushes
 			}
 		}
 	}

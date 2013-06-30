@@ -4,18 +4,30 @@
 #include "level.h"
 #include <QList>
 #include <QString>
+#include <QObject>
+#include <QtQml>
 
-class LevelCollection
+QML_DECLARE_TYPE(Level)
+//Q_DECLARE_METATYPE(Level)
+//Q_DECLARE_METATYPE(QQmlListProperty<Level>)
+
+class LevelCollection : public QObject
 {
+	Q_OBJECT
+		Q_PROPERTY(int currentLevel MEMBER currentLevel_ NOTIFY currentLevelChanged);
+
 	public:
 		LevelCollection(QString name, QByteArray collectionData);
 		virtual ~LevelCollection();
-		QString name() const;
 		const QList<Level*> levels() const;
+		Level *currentLevel() const;
+
+	signals:
+		void currentLevelChanged();
 
 	private:
 		QList<Level*> levels_;
-		QString name_;
+		int currentLevel_;
 };
 
 #endif // LEVELCOLLECTION_H

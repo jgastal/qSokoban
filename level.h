@@ -25,6 +25,8 @@ class Level : public QAbstractItemModel
 	Q_PROPERTY(QVariantList boxes READ boxes NOTIFY boxMoved)
 	Q_PROPERTY(int width MEMBER width_ NOTIFY sizeChanged)
 	Q_PROPERTY(int height MEMBER height_ NOTIFY sizeChanged)
+	Q_PROPERTY(int steps MEMBER steps_ NOTIFY steped);
+	Q_PROPERTY(int pushes MEMBER pushes_ NOTIFY pushed);
 
 	public:
 		enum Tile {
@@ -53,12 +55,15 @@ class Level : public QAbstractItemModel
 		void boxMoved(QList<QPoint> newBoxesPos);
 		void levelCompleted();
 		void sizeChanged(int width, int height);
+		void steped();
+		void pushed();
 
 	private:
 		QVector<QVector<Tile>> board_;
 		QPoint manPos_;
 		QList<QPoint> boxesPos_;
 		int width_, height_;
+		int steps_, pushes_;
 		static const int tileImageRole;
 };
 
