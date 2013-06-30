@@ -1,4 +1,4 @@
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=c++11
 
 QT += qml quick
 
