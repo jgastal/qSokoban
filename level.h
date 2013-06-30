@@ -62,6 +62,7 @@ class Level : public QAbstractItemModel
 
 	public slots:
 		void undo();
+		void reset();
 
 	signals:
 		void manMoved(QPoint newPos);

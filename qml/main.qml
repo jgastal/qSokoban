@@ -13,7 +13,6 @@ ApplicationWindow {
 
 		RowLayout {
 			Button {
-				id: restartButton
 				text: "Restart"
 				iconName: "restart"
 			}
@@ -26,7 +25,6 @@ ApplicationWindow {
 			}
 
 			Button {
-				id: prevButton
 				text: "Previous level"
 				iconName: "previous"
 				enabled: collection.hasPreviousLevel
@@ -34,7 +32,6 @@ ApplicationWindow {
 			}
 
 			Button {
-				id: nextButton
 				text: "Next level"
 				iconName: "next"
 				enabled: collection.nextLevelUnlocked
@@ -42,7 +39,6 @@ ApplicationWindow {
 			}
 
 			Button {
-				id: quitButton
 				text: "Quit"
 				iconName: "quit"
 				onClicked: Qt.quit()
