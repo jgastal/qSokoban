@@ -148,9 +148,10 @@ QPoint Level::manPos() const
 
 void Level::setManPos(QPoint p)
 {
+	if (board_[p.x()][p.y()] == WALL)
+		return;
 	manPos_.rx() = p.x();
 	manPos_.ry() = p.y();
-	//TODO enforce move restrictions
 	//TODO move objects
 	emit manMoved(manPos_);
 }
