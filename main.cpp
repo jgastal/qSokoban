@@ -3,15 +3,16 @@
 #include <QFileInfoList>
 #include <QFile>
 #include <QDebug>
-#include <QQuickView>
-#include <QQuickItem>
+#include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QQuickWindow>
 
 #include "levelcollection.h"
 
 int main(int argc, char **argv)
 {
 	QGuiApplication app(argc, argv);
+	QQmlApplicationEngine engine;
 	QDir levelsDir(":/levels/");
 	QFileInfoList collectionFiles = levelsDir.entryInfoList();
 	QList<LevelCollection*> collections;
@@ -29,13 +30,9 @@ int main(int argc, char **argv)
 	}
 
 	Level *l = collections.first()->levels().first();
-	QQuickView viewer;
-	viewer.rootContext()->setContextProperty("level", l);
-	viewer.setSource(QStringLiteral("qrc:/qml/main.qml"));
-	viewer.rootObject()->setWidth(64 * l->width());
-	viewer.rootObject()->setHeight(64 * l->height());
-	viewer.resize(64 * l->width(), 64 * l->height());
-	viewer.show();
+
+	engine.rootContext()->setContextProperty("level", l);
+	engine.load(QUrl("qrc:/qml/main.qml"));
 
 	return app.exec();
 }

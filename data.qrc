@@ -8,5 +8,6 @@
         <file>images/outside.png</file>
         <file>images/wall.png</file>
         <file>images/box.png</file>
+        <file>qml/Board.qml</file>
     </qresource>
 </RCC>

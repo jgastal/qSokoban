@@ -14,4 +14,6 @@ SOURCES += \
 RESOURCES += \
     data.qrc
 
-OTHER_FILES += qml/main.qml
+OTHER_FILES += \
+    qml/Board.qml \
+    qml/main.qml

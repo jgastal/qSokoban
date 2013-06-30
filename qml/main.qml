@@ -1,52 +1,74 @@
-import QtQuick 2.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 
-Item {
-	GridView {
-		id: map
-		model: level
-		interactive: false
-		anchors.fill: parent
-		cellHeight: 64
-		cellWidth: 64
-		delegate: Item {
-			Image {
-				width: 64
-				height: 64
-				source: model.tileImage
+ApplicationWindow {
+	title: "qSokoban"
+	visible: true
+	objectName: "Window"
+	width: board.width
+	height: board.height + toolbar.height + infoBar.height
+	toolBar: ToolBar {
+		id: toolbar
+
+		RowLayout {
+			Button {
+				id: restartButton
+				text: "Restart"
+				iconName: "restart"
+			}
+
+			Button {
+				id: prevButton
+				text: "Previous level"
+				iconName: "previous"
+			}
+
+			Button {
+				id: nextButton
+				text: "Next level"
+				iconName: "next"
+			}
+
+			Button {
+				id: quitButton
+				text: "Quit"
+				iconName: "quit"
 			}
 		}
 	}
-	Repeater {
-		model: level.boxes
-		Image {
-			x: modelData.x * 64
-			y: modelData.y * 64
-			width: 64
-			height: 64
-			source: "qrc:/images/box.png"
+	statusBar: StatusBar {
+		id: infoBar
+
+		RowLayout {
+			Label {
+				id: collectionInfo
+			}
+			Label {
+				text: "Level:"
+			}
+			Label {
+				text: "Steps:"
+			}
+			Label {
+				text: "Steps:"
+			}
+			Label {
+				text: "pushes:"
+			}
+			Label {
+				text: "pushes:"
+			}
 		}
 	}
 
-	Image {
-		x: level.manPos.x * 64
-		y: level.manPos.y * 64
-		width: 64
-		height: 64
+	Board {
+		id: board
+		objectName: "Board"
 		focus: true
-		source: "qrc:/images/man.png"
-		Behavior on x { SmoothedAnimation { velocity: 400; } }
-		Behavior on y { SmoothedAnimation { velocity: 400; } }
-		Keys.onDownPressed: {
-			level.manPos.y += 1
-		}
-		Keys.onUpPressed: {
-			level.manPos.y -= 1
-		}
-		Keys.onLeftPressed: {
-			level.manPos.x -= 1
-		}
-		Keys.onRightPressed: {
-			level.manPos.x += 1
-		}
+		width: level.width * 64
+		height: level.height * 64
 	}
+	Component.onCompleted: board.forceActiveFocus()
 }
+

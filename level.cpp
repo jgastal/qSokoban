@@ -87,6 +87,7 @@ Level::Level(QByteArray data) : width_(0), height_(0)
 				break;
 		}
 	}
+	emit sizeChanged(width_, height_);
 }
 
 QByteArray Level::serialize() const
@@ -128,16 +129,6 @@ QByteArray Level::serialize() const
 		data.append("\n", 1);
 	}
 	return data;
-}
-
-int Level::width() const
-{
-	return width_;
-}
-
-int Level::height() const
-{
-	return height_;
 }
 
 QPoint Level::manPos() const
