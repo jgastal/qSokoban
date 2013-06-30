@@ -9,5 +9,14 @@
         <file>images/wall.png</file>
         <file>images/box.png</file>
         <file>qml/Board.qml</file>
+        <file>levels/LOMA.data</file>
+        <file>levels/mas_microban.data</file>
+        <file>levels/mas_sasquatch.data</file>
+        <file>levels/microban.data</file>
+        <file>levels/sasquatch_III.data</file>
+        <file>levels/sasquatch_IV.data</file>
+        <file>levels/sasquatch_V.data</file>
+        <file>levels/sasquatch_VI.data</file>
+        <file>levels/sasquatch_VII.data</file>
     </qresource>
 </RCC>
