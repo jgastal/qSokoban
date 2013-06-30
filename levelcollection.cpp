@@ -1,6 +1,10 @@
 #include "levelcollection.h"
 #include <QDebug>
 
+LevelCollection::LevelCollection()  : currentLevel_(-1), maxUnlockedLevel_(-1)
+{
+}
+
 LevelCollection::LevelCollection(QString name, QByteArray collectionData) : currentLevel_(0), maxUnlockedLevel_(0)
 {
 	setObjectName(name);

@@ -6,8 +6,8 @@ ApplicationWindow {
 	title: "qSokoban"
 	visible: true
 	objectName: "Window"
-	width: board.width
-	height: board.height + toolbar.height + infoBar.height
+	width: 800
+	height: 800
 	toolBar: ToolBar {
 		id: toolbar
 
@@ -15,34 +15,40 @@ ApplicationWindow {
 			Button {
 				text: "Reset"
 				iconName: "reset"
-				onClicked: collection.currentLevel.reset()
+				onClicked: game.currentCollection.currentLevel.reset()
 			}
 
 			Button {
 				text: "Undo"
 				iconName: "undo"
-				enabled: collection.currentLevel.canUndo
-				onClicked: collection.currentLevel.undo()
+				enabled: game.currentCollection.currentLevel.canUndo
+				onClicked: game.currentCollection.currentLevel.undo()
 			}
 
 			Button {
 				text: "Previous level"
 				iconName: "previous"
-				enabled: collection.hasPreviousLevel
-				onClicked: collection.previousLevel()
+				enabled: game.currentCollection.hasPreviousLevel
+				onClicked: game.currentCollection.previousLevel()
 			}
 
 			Button {
 				text: "Next level"
 				iconName: "next"
-				enabled: collection.nextLevelUnlocked
-				onClicked: collection.nextLevel()
+				enabled: game.currentCollection.nextLevelUnlocked
+				onClicked: game.currentCollection.nextLevel()
 			}
 
 			Button {
 				text: "Quit"
 				iconName: "quit"
 				onClicked: Qt.quit()
+			}
+
+			ComboBox {
+				model: game.collections
+				onCurrentTextChanged: game.changeCollection(currentText)
+				currentIndex: game.currentCollectionIndex
 			}
 		}
 	}
@@ -51,16 +57,16 @@ ApplicationWindow {
 
 		RowLayout {
 			Label {
-				text: collection.objectName
+				text: game.currentCollection.objectName
 			}
 			Label {
-				text: "Level:" + collection.levelNumber
+				text: "Level:" + game.currentCollection.levelNumber
 			}
 			Label {
-				text: "Steps:" + collection.currentLevel.steps
+				text: "Steps:" + game.currentCollection.currentLevel.steps
 			}
 			Label {
-				text: "pushes:"  + collection.currentLevel.pushes
+				text: "pushes:"  + game.currentCollection.currentLevel.pushes
 			}
 		}
 	}
@@ -69,8 +75,8 @@ ApplicationWindow {
 		id: board
 		objectName: "Board"
 		focus: true
-		width: collection.currentLevel.width * 64
-		height: collection.currentLevel.height * 64
+		width: game.currentCollection.currentLevel.width * 64
+		height: game.currentCollection.currentLevel.height * 64
 	}
 	Component.onCompleted: board.forceActiveFocus()
 }

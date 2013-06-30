@@ -15,7 +15,6 @@ The goal of the game is to move all the red gems to the green marked spots.
 TODO
 ====
  * Put proper icons in buttons
- * Implement choosing level collection
  * Don't animate man movement when changing levels
  * Handle empty spaces in between walls as OUTSIDE
  * Notify user he has won when level is completed
