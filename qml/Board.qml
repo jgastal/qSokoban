@@ -3,21 +3,21 @@ import QtQuick 2.0
 Item {
 	focus: true
 	Keys.onDownPressed: {
-		level.manPos.y += 1
+		collection.currentLevel.manPos.y += 1
 	}
 	Keys.onUpPressed: {
-		level.manPos.y -= 1
+		collection.currentLevel.manPos.y -= 1
 	}
 	Keys.onLeftPressed: {
-		level.manPos.x -= 1
+		collection.currentLevel.manPos.x -= 1
 	}
 	Keys.onRightPressed: {
-		level.manPos.x += 1
+		collection.currentLevel.manPos.x += 1
 	}
 
 	GridView {
 		id: map
-		model: level
+		model: collection.currentLevel
 		interactive: false
 		anchors.fill: parent
 		cellHeight: 64
@@ -31,7 +31,7 @@ Item {
 		}
 	}
 	Repeater {
-		model: level.boxes
+		model: collection.currentLevel.boxes
 		Image {
 			x: modelData.x * 64
 			y: modelData.y * 64
@@ -42,8 +42,8 @@ Item {
 	}
 
 	Image {
-		x: level.manPos.x * 64
-		y: level.manPos.y * 64
+		x: collection.currentLevel.manPos.x * 64
+		y: collection.currentLevel.manPos.y * 64
 		width: 64
 		height: 64
 		source: "qrc:/images/man.png"

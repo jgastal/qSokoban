@@ -13,6 +13,10 @@ const char *BadLevelDescription::what() const throw()
 
 const int Level::tileImageRole = Qt::UserRole + 1;
 
+Level::Level() : width_(0), height_(0), steps_(0), pushes_(0)
+{
+}
+
 Level::Level(QByteArray data) : width_(0), height_(0), steps_(0), pushes_(0)
 {
 	QList<Tile> tiles;

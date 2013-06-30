@@ -36,6 +36,7 @@ class Level : public QAbstractItemModel
 			OUTSIDE, //Out of board
 			NEW_ROW
 		};
+		Level();
 		Level(QByteArray data);
 		QByteArray serialize() const;
 		QPoint manPos() const;

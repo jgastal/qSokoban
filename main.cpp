@@ -6,6 +6,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
+#include <QtQml>
 
 #include "levelcollection.h"
 
@@ -16,6 +17,8 @@ int main(int argc, char **argv)
 	QDir levelsDir(":/levels/");
 	QFileInfoList collectionFiles = levelsDir.entryInfoList();
 	QList<LevelCollection*> collections;
+
+	qmlRegisterType<Level>("Level", 1,0, "Level");
 
 	for (int i = 0; i < collectionFiles.size(); ++i)
 	{
@@ -29,8 +32,10 @@ int main(int argc, char **argv)
 			qWarning() << "Empty collection found: " << f.fileName();
 	}
 
-	engine.rootContext()->setContextProperty("collection", collections.first());
-	engine.rootContext()->setContextProperty("level", collections.first()->levels().first());
+	LevelCollection *col = collections.first();
+	engine.rootContext()->setContextProperty("collection", col);
+	col->connect(col->currentLevel(), &Level::levelCompleted, col, &LevelCollection::unlockNextLevel);
+	col->connect(col->currentLevel(), &Level::levelCompleted, col, &LevelCollection::nextLevel);
 	engine.load(QUrl("qrc:/qml/main.qml"));
 
 	return app.exec();

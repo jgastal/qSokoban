@@ -22,12 +22,16 @@ ApplicationWindow {
 				id: prevButton
 				text: "Previous level"
 				iconName: "previous"
+				enabled: collection.hasPreviousLevel
+				onClicked: collection.previousLevel()
 			}
 
 			Button {
 				id: nextButton
 				text: "Next level"
 				iconName: "next"
+				enabled: collection.nextLevelUnlocked
+				onClicked: collection.nextLevel()
 			}
 
 			Button {
@@ -46,13 +50,13 @@ ApplicationWindow {
 				text: collection.objectName
 			}
 			Label {
-				text: "Level:" + collection.currentLevel
+				text: "Level:" + collection.levelNumber
 			}
 			Label {
-				text: "Steps:" + level.steps
+				text: "Steps:" + collection.currentLevel.steps
 			}
 			Label {
-				text: "pushes:"  + level.pushes
+				text: "pushes:"  + collection.currentLevel.pushes
 			}
 		}
 	}
@@ -61,8 +65,8 @@ ApplicationWindow {
 		id: board
 		objectName: "Board"
 		focus: true
-		width: level.width * 64
-		height: level.height * 64
+		width: collection.currentLevel.width * 64
+		height: collection.currentLevel.height * 64
 	}
 	Component.onCompleted: board.forceActiveFocus()
 }

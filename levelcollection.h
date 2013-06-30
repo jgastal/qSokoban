@@ -5,29 +5,36 @@
 #include <QList>
 #include <QString>
 #include <QObject>
-#include <QtQml>
-
-QML_DECLARE_TYPE(Level)
-//Q_DECLARE_METATYPE(Level)
-//Q_DECLARE_METATYPE(QQmlListProperty<Level>)
 
 class LevelCollection : public QObject
 {
 	Q_OBJECT
-		Q_PROPERTY(int currentLevel MEMBER currentLevel_ NOTIFY currentLevelChanged);
+	Q_PROPERTY(int levelNumber MEMBER currentLevel_ NOTIFY currentLevelChanged);
+	Q_PROPERTY(Level *currentLevel READ currentLevel NOTIFY currentLevelChanged);
+	Q_PROPERTY(bool nextLevelUnlocked READ nextLevelUnlocked NOTIFY unlockedLevelChanged);
+	Q_PROPERTY(bool hasPreviousLevel READ hasPreviousLevel NOTIFY currentLevelChanged);
 
 	public:
 		LevelCollection(QString name, QByteArray collectionData);
 		virtual ~LevelCollection();
 		const QList<Level*> levels() const;
 		Level *currentLevel() const;
+		bool nextLevelUnlocked() const;
+
+	public slots:
+		bool hasPreviousLevel();
+		void unlockNextLevel();
+		void nextLevel();
+		void previousLevel();
 
 	signals:
 		void currentLevelChanged();
+		void unlockedLevelChanged();
 
 	private:
 		QList<Level*> levels_;
 		int currentLevel_;
+		int maxUnlockedLevel_;
 };
 
 #endif // LEVELCOLLECTION_H

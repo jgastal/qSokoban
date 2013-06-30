@@ -1,6 +1,7 @@
 #include "levelcollection.h"
+#include <QDebug>
 
-LevelCollection::LevelCollection(QString name, QByteArray collectionData) : currentLevel_(0)
+LevelCollection::LevelCollection(QString name, QByteArray collectionData) : currentLevel_(0), maxUnlockedLevel_(0)
 {
 	setObjectName(name);
 
@@ -29,4 +30,32 @@ const QList<Level *> LevelCollection::levels() const
 Level *LevelCollection::currentLevel() const
 {
 	return levels_.at(currentLevel_);
+}
+
+bool LevelCollection::hasPreviousLevel()
+{
+	return currentLevel_ != 0;
+}
+
+bool LevelCollection::nextLevelUnlocked() const
+{
+	return currentLevel_ + 1 <= maxUnlockedLevel_;
+}
+
+void LevelCollection::unlockNextLevel()
+{
+	++maxUnlockedLevel_;
+	unlockedLevelChanged();
+}
+
+void LevelCollection::nextLevel()
+{
+	++currentLevel_;
+	emit currentLevelChanged();
+}
+
+void LevelCollection::previousLevel()
+{
+	--currentLevel_;
+	emit currentLevelChanged();
 }
