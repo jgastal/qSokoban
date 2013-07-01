@@ -2,7 +2,10 @@ import QtQuick 2.0
 
 Item {
 	focus: true
+	width: currentLevel.width * tileSize
+	height: currentLevel.height * tileSize
 	property var currentLevel: game.currentCollection.currentLevel
+	property int tileSize
 	Keys.onDownPressed: {
 		currentLevel.manPos.y += 1
 	}
@@ -25,12 +28,12 @@ Item {
 		model: currentLevel
 		interactive: false
 		anchors.fill: parent
-		cellHeight: 64
-		cellWidth: 64
+		cellHeight: tileSize
+		cellWidth: tileSize
 		delegate: Item {
 			Image {
-				width: 64
-				height: 64
+				width: tileSize
+				height: tileSize
 				source: model.tileImage
 			}
 		}
@@ -38,19 +41,19 @@ Item {
 	Repeater {
 		model: currentLevel.boxes
 		Image {
-			x: modelData.x * 64
-			y: modelData.y * 64
-			width: 64
-			height: 64
+			x: modelData.x * tileSize
+			y: modelData.y * tileSize
+			width: tileSize
+			height: tileSize
 			source: "qrc:/images/box.png"
 		}
 	}
 
 	Image {
-		x: currentLevel.manPos.x * 64
-		y: currentLevel.manPos.y * 64
-		width: 64
-		height: 64
+		x: currentLevel.manPos.x * tileSize
+		y: currentLevel.manPos.y * tileSize
+		width: tileSize
+		height: tileSize
 		source: "qrc:/images/man.png"
 		Behavior on x { SmoothedAnimation { velocity: 400; } }
 		Behavior on y { SmoothedAnimation { velocity: 400; } }
