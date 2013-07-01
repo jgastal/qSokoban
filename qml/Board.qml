@@ -19,7 +19,7 @@ Item {
 		level.manPos.x += 1
 	}
 	Keys.onPressed: {
-		if (event.key == Qt.Key_Z && event.modifiers == Qt.ControlModifier && level.canUndo)
+		if (event.key === Qt.Key_Z && event.modifiers === Qt.ControlModifier && level.canUndo)
 			level.undo();
 	}
 
