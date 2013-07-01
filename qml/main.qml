@@ -72,11 +72,16 @@ ApplicationWindow {
 		}
 	}
 
+	function min(a, b)
+	{
+		return a <= b ? a : b;
+	}
+
 	Board {
 		id: board
 		objectName: "Board"
 		focus: true
-		tileSize: 64
+		tileSize: min(parent.width / currentLevel.width, parent.height / currentLevel.height)
 		level: currentLevel
 	}
 	Component.onCompleted: board.forceActiveFocus()

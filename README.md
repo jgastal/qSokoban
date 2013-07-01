@@ -22,3 +22,4 @@ TODO
  * Allow saving position of a given level
  * Figure out way to animate movement of boxes
  * Consider using Repeater instead of GridView to simplify Level's code
+ * Save window position and size
