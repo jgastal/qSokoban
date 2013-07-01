@@ -16,36 +16,41 @@ ApplicationWindow {
 		id: toolbar
 
 		RowLayout {
-			Button {
+			ToolButton {
 				text: "Reset"
-				iconName: "reset"
+				iconName: "edit-clear"
+				iconSource: "qrc:/images/edit-clear.png"
 				onClicked: currentLevel.reset()
 			}
 
-			Button {
+			ToolButton {
 				text: "Undo"
-				iconName: "undo"
+				iconName: "edit-undo"
+				iconSource: "qrc:/images/edit-undo.png"
 				enabled: currentLevel.canUndo
 				onClicked: currentLevel.undo()
 			}
 
-			Button {
+			ToolButton {
 				text: "Previous level"
-				iconName: "previous"
+				iconName: "go-previous"
+				iconSource: "qrc:/images/go-previous.png"
 				enabled: game.currentCollection.hasPreviousLevel
 				onClicked: game.currentCollection.previousLevel()
 			}
 
-			Button {
+			ToolButton {
 				text: "Next level"
-				iconName: "next"
+				iconName: "go-next"
+				iconSource: "qrc:/images/go-next.png"
 				enabled: game.currentCollection.nextLevelUnlocked
 				onClicked: game.currentCollection.nextLevel()
 			}
 
-			Button {
+			ToolButton {
 				text: "Quit"
-				iconName: "quit"
+				iconName: "application-exit"
+				iconSource: "qrc:/images/application-exit.png"
 				onClicked: Qt.quit()
 			}
 

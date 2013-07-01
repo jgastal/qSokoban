@@ -14,7 +14,6 @@ The goal of the game is to move all the red gems to the green marked spots.
 
 TODO
 ====
- * Put proper icons in buttons
  * Don't animate man movement when changing levels
  * Handle empty spaces in between walls as OUTSIDE
  * Handle reaching the end of the collection

@@ -18,5 +18,10 @@
         <file>levels/Sasquatch V</file>
         <file>levels/Sasquatch VI</file>
         <file>levels/Sasquatch VII</file>
+        <file>images/application-exit.png</file>
+        <file>images/edit-clear.png</file>
+        <file>images/edit-undo.png</file>
+        <file>images/go-next.png</file>
+        <file>images/go-previous.png</file>
     </qresource>
 </RCC>
