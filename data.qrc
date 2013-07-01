@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>levels/sasquatch.data</file>
         <file>qml/main.qml</file>
         <file>images/man.png</file>
         <file>images/box_destination.png</file>
@@ -9,14 +8,15 @@
         <file>images/wall.png</file>
         <file>images/box.png</file>
         <file>qml/Board.qml</file>
-        <file>levels/LOMA.data</file>
-        <file>levels/mas_microban.data</file>
-        <file>levels/mas_sasquatch.data</file>
-        <file>levels/microban.data</file>
-        <file>levels/sasquatch_III.data</file>
-        <file>levels/sasquatch_IV.data</file>
-        <file>levels/sasquatch_V.data</file>
-        <file>levels/sasquatch_VI.data</file>
-        <file>levels/sasquatch_VII.data</file>
+        <file>levels/LOMA</file>
+        <file>levels/Mas Microban</file>
+        <file>levels/Mas Sasquatch</file>
+        <file>levels/Microban</file>
+        <file>levels/Sasquatch</file>
+        <file>levels/Sasquatch III</file>
+        <file>levels/Sasquatch IV</file>
+        <file>levels/Sasquatch V</file>
+        <file>levels/Sasquatch VI</file>
+        <file>levels/Sasquatch VII</file>
     </qresource>
 </RCC>
