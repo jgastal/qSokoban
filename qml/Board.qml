@@ -2,30 +2,30 @@ import QtQuick 2.0
 
 Item {
 	focus: true
-	width: currentLevel.width * tileSize
-	height: currentLevel.height * tileSize
-	property var currentLevel: game.currentCollection.currentLevel
+	width: level.width * tileSize
+	height: level.height * tileSize
+	property var level
 	property int tileSize
 	Keys.onDownPressed: {
-		currentLevel.manPos.y += 1
+		level.manPos.y += 1
 	}
 	Keys.onUpPressed: {
-		currentLevel.manPos.y -= 1
+		level.manPos.y -= 1
 	}
 	Keys.onLeftPressed: {
-		currentLevel.manPos.x -= 1
+		level.manPos.x -= 1
 	}
 	Keys.onRightPressed: {
-		currentLevel.manPos.x += 1
+		level.manPos.x += 1
 	}
 	Keys.onPressed: {
-		if (event.key == Qt.Key_Z && event.modifiers == Qt.ControlModifier && currentLevel.canUndo)
-			currentLevel.undo();
+		if (event.key == Qt.Key_Z && event.modifiers == Qt.ControlModifier && level.canUndo)
+			level.undo();
 	}
 
 	GridView {
 		id: map
-		model: currentLevel
+		model: level
 		interactive: false
 		anchors.fill: parent
 		cellHeight: tileSize
@@ -39,7 +39,7 @@ Item {
 		}
 	}
 	Repeater {
-		model: currentLevel.boxes
+		model: level.boxes
 		Image {
 			x: modelData.x * tileSize
 			y: modelData.y * tileSize
@@ -50,8 +50,8 @@ Item {
 	}
 
 	Image {
-		x: currentLevel.manPos.x * tileSize
-		y: currentLevel.manPos.y * tileSize
+		x: level.manPos.x * tileSize
+		y: level.manPos.y * tileSize
 		width: tileSize
 		height: tileSize
 		source: "qrc:/images/man.png"

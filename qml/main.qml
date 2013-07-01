@@ -77,6 +77,7 @@ ApplicationWindow {
 		objectName: "Board"
 		focus: true
 		tileSize: 64
+		level: currentLevel
 	}
 	Component.onCompleted: board.forceActiveFocus()
 }
