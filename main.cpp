@@ -7,8 +7,8 @@
 int main(int argc, char **argv)
 {
 	QGuiApplication app(argc, argv);
-	QQmlApplicationEngine engine;
 	Game game;
+	QQmlApplicationEngine engine;
 
 	engine.rootContext()->setContextProperty("game", &game);
 	engine.load(QUrl("qrc:/qml/main.qml"));

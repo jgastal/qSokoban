@@ -2,26 +2,27 @@ import QtQuick 2.0
 
 Item {
 	focus: true
+	property var currentLevel: game.currentCollection.currentLevel
 	Keys.onDownPressed: {
-		game.currentCollection.currentLevel.manPos.y += 1
+		currentLevel.manPos.y += 1
 	}
 	Keys.onUpPressed: {
-		game.currentCollection.currentLevel.manPos.y -= 1
+		currentLevel.manPos.y -= 1
 	}
 	Keys.onLeftPressed: {
-		game.currentCollection.currentLevel.manPos.x -= 1
+		currentLevel.manPos.x -= 1
 	}
 	Keys.onRightPressed: {
-		game.currentCollection.currentLevel.manPos.x += 1
+		currentLevel.manPos.x += 1
 	}
 	Keys.onPressed: {
-		if (event.key == Qt.Key_Z && event.modifiers == Qt.ControlModifier && game.currentCollection.currentLevel.canUndo)
-			game.currentCollection.currentLevel.undo();
+		if (event.key == Qt.Key_Z && event.modifiers == Qt.ControlModifier && currentLevel.canUndo)
+			currentLevel.undo();
 	}
 
 	GridView {
 		id: map
-		model: game.currentCollection.currentLevel
+		model: currentLevel
 		interactive: false
 		anchors.fill: parent
 		cellHeight: 64
@@ -35,7 +36,7 @@ Item {
 		}
 	}
 	Repeater {
-		model: game.currentCollection.currentLevel.boxes
+		model: currentLevel.boxes
 		Image {
 			x: modelData.x * 64
 			y: modelData.y * 64
@@ -46,8 +47,8 @@ Item {
 	}
 
 	Image {
-		x: game.currentCollection.currentLevel.manPos.x * 64
-		y: game.currentCollection.currentLevel.manPos.y * 64
+		x: currentLevel.manPos.x * 64
+		y: currentLevel.manPos.y * 64
 		width: 64
 		height: 64
 		source: "qrc:/images/man.png"

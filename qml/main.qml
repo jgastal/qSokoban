@@ -8,6 +8,7 @@ ApplicationWindow {
 	objectName: "Window"
 	width: 800
 	height: 800
+	property var currentLevel: game.currentCollection.currentLevel
 	toolBar: ToolBar {
 		id: toolbar
 
@@ -15,14 +16,14 @@ ApplicationWindow {
 			Button {
 				text: "Reset"
 				iconName: "reset"
-				onClicked: game.currentCollection.currentLevel.reset()
+				onClicked: currentLevel.reset()
 			}
 
 			Button {
 				text: "Undo"
 				iconName: "undo"
-				enabled: game.currentCollection.currentLevel.canUndo
-				onClicked: game.currentCollection.currentLevel.undo()
+				enabled: currentLevel.canUndo
+				onClicked: currentLevel.undo()
 			}
 
 			Button {
@@ -63,10 +64,10 @@ ApplicationWindow {
 				text: "Level:" + game.currentCollection.levelNumber
 			}
 			Label {
-				text: "Steps:" + game.currentCollection.currentLevel.steps
+				text: "Steps:" + currentLevel.steps
 			}
 			Label {
-				text: "pushes:"  + game.currentCollection.currentLevel.pushes
+				text: "pushes:"  + currentLevel.pushes
 			}
 		}
 	}
@@ -75,8 +76,8 @@ ApplicationWindow {
 		id: board
 		objectName: "Board"
 		focus: true
-		width: game.currentCollection.currentLevel.width * 64
-		height: game.currentCollection.currentLevel.height * 64
+		width: currentLevel.width * 64
+		height: currentLevel.height * 64
 	}
 	Component.onCompleted: board.forceActiveFocus()
 }
