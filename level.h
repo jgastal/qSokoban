@@ -8,12 +8,6 @@
 #include <QStack>
 #include "badleveldescription.h"
 
-struct Movement {
-	int mandx, mandy;
-	int boxdx, boxdy;
-	QPoint box;
-};
-
 class Level : public QAbstractItemModel
 {
 	Q_OBJECT
@@ -25,14 +19,20 @@ class Level : public QAbstractItemModel
 	Q_PROPERTY(int pushes MEMBER pushes_ NOTIFY pushed);
 	Q_PROPERTY(bool canUndo READ canUndo NOTIFY undoStackChanged);
 
+	enum TileType {
+		WALL,
+		FLOOR,
+		BOX_DESTINATION,
+		OUTSIDE, //Out of board
+		NEW_ROW
+	};
+	struct Movement {
+		int mandx, mandy;
+		int boxdx, boxdy;
+		QPoint box;
+	};
+
 	public:
-		enum TileType {
-			WALL,
-			FLOOR,
-			BOX_DESTINATION,
-			OUTSIDE, //Out of board
-			NEW_ROW
-		};
 		Level();
 		Level(QByteArray data);
 		QByteArray serialize() const;
