@@ -64,4 +64,39 @@ Item {
 		Behavior on x { SmoothedAnimation { velocity: 400; } }
 		Behavior on y { SmoothedAnimation { velocity: 400; } }
 	}
+
+	Rectangle {
+		id: won
+		anchors.centerIn: parent
+		width: 400
+		height: 100
+		color: "yellow"
+		visible: false
+		Connections {
+			target: level
+			onLevelCompleted: {
+				won.visible = true
+				hideTimer.running = true
+			}
+		}
+		transitions: Transition {
+			PropertyAnimation {
+				properties: "visible"
+				easing.type: Easing.InOutQuad;
+			}
+		}
+
+		Text {
+			anchors.centerIn: parent
+			color: "red"
+			text: "Level completed!"
+			font.pointSize: 30
+		}
+		Timer {
+			id: hideTimer
+			interval: 500
+			running: false
+			onTriggered: won.visible = false
+		}
+	}
 }

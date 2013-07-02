@@ -17,7 +17,6 @@ TODO
  * Put proper icons in buttons
  * Don't animate man movement when changing levels
  * Handle empty spaces in between walls as OUTSIDE
- * Notify user he has won when level is completed
  * Handle reaching the end of the collection
  * Allow saving position of a given level
  * Figure out way to animate movement of boxes
