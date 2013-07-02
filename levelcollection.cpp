@@ -86,9 +86,5 @@ void LevelCollection::nextLevel()
 
 void LevelCollection::previousLevel()
 {
-	--currentLevel_;
-	emit currentLevelChanged();
-	levels_.at(currentLevel_)->reset();
-	//Making sure next button's state is recalculated
-	emit unlockedLevelChanged();
+	setCurrentLevel(--currentLevel_);
 }
