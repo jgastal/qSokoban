@@ -4,11 +4,11 @@
 #include <QList>
 #include <QPoint>
 #include <QByteArray>
-#include <QAbstractItemModel>
+#include <QAbstractListModel>
 #include <QStack>
 #include "badleveldescription.h"
 
-class Level : public QAbstractItemModel
+class Level : public QAbstractListModel
 {
 	Q_OBJECT
 	Q_PROPERTY(QPoint manPos READ manPos WRITE setManPos NOTIFY manMoved)
@@ -44,10 +44,6 @@ class Level : public QAbstractItemModel
 		//Item model methods
 		int rowCount(const QModelIndex &parent = QModelIndex()) const;
 		QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-		int columnCount(const QModelIndex &parent = QModelIndex()) const;
-		QHash<int, QByteArray> roleNames() const;
-		QModelIndex index(int row, int column, const QModelIndex &parent) const;
-		QModelIndex parent(const QModelIndex &child) const;
 
 	public slots:
 		void undo();
@@ -68,7 +64,6 @@ class Level : public QAbstractItemModel
 		QList<QPoint> boxesPos_;
 		int width_, height_;
 		int steps_, pushes_;
-		static const int tileImageRole;
 		QStack<Movement> undoStack_;
 };
 

@@ -34,7 +34,7 @@ Item {
 			Image {
 				width: tileSize
 				height: tileSize
-				source: model.tileImage
+				source: model.display
 			}
 		}
 	}

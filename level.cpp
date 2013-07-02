@@ -2,10 +2,6 @@
 #include <QDebug>
 #include <QHash>
 
-#define UNUSED __attribute__((unused))
-
-const int Level::tileImageRole = Qt::UserRole + 1;
-
 Level::Level() : width_(0), height_(0), steps_(0), pushes_(0)
 {
 }
@@ -187,16 +183,10 @@ bool Level::canUndo() const
 	return !undoStack_.isEmpty();
 }
 
-int Level::rowCount(UNUSED const QModelIndex &parent) const
+int Level::rowCount(__attribute__((unused)) const QModelIndex &parent) const
 {
 	// Fucking grid view expects a list not a 2d array
 	return width_ * height_;
-}
-
-int Level::columnCount(UNUSED const QModelIndex &parent) const
-{
-	// Fucking grid view expects a list not a 2d array
-	return 1;
 }
 
 QVariant Level::data(const QModelIndex &index, int role) const
@@ -205,42 +195,21 @@ QVariant Level::data(const QModelIndex &index, int role) const
 	int x, y;
 	x = index.row() % width_;
 	y = index.row() / width_;
-	switch(role)
+	if (role != Qt::DisplayRole)
+		return QVariant();
+	switch(board_[x][y])
 	{
-		case tileImageRole:
-			switch(board_[x][y])
-			{
-				case WALL:
-					return QVariant("qrc:/images/wall.png");
-				case FLOOR:
-					return QVariant("qrc:/images/floor.png");
-				case BOX_DESTINATION:
-					return QVariant("qrc:/images/box_destination.png");
-				case OUTSIDE:
-					return QVariant("qrc:/images/outside.png");
-				case NEW_ROW:
-					return QVariant();
-			}
-		default:
+		case WALL:
+			return QVariant("qrc:/images/wall.png");
+		case FLOOR:
+			return QVariant("qrc:/images/floor.png");
+		case BOX_DESTINATION:
+			return QVariant("qrc:/images/box_destination.png");
+		case OUTSIDE:
+			return QVariant("qrc:/images/outside.png");
+		case NEW_ROW:
 			return QVariant();
 	}
-}
-
-QHash<int, QByteArray> Level::roleNames() const
-{
-	QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
-	roles.insert(tileImageRole, QByteArray("tileImage"));
-	return roles;
-}
-
-QModelIndex Level::index(int row, int column, UNUSED const QModelIndex &parent) const
-{
-	return createIndex(row, column);
-}
-
-QModelIndex Level::parent(UNUSED const QModelIndex &child) const
-{
-	return QModelIndex();
 }
 
 void Level::undo()
