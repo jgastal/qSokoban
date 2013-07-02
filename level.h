@@ -37,7 +37,7 @@ class Level : public QAbstractItemModel
 	Q_PROPERTY(bool canUndo READ canUndo NOTIFY undoStackChanged);
 
 	public:
-		enum Tile {
+		enum TileType {
 			WALL,
 			FLOOR,
 			BOX_DESTINATION,
@@ -74,7 +74,7 @@ class Level : public QAbstractItemModel
 		void undoStackChanged();
 
 	private:
-		QVector<QVector<Tile>> board_;
+		QVector<QVector<TileType>> board_;
 		QPoint manPos_;
 		QList<QPoint> boxesPos_;
 		int width_, height_;

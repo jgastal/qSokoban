@@ -19,7 +19,7 @@ Level::Level() : width_(0), height_(0), steps_(0), pushes_(0)
 
 Level::Level(QByteArray data) : width_(0), height_(0), steps_(0), pushes_(0)
 {
-	QList<Tile> tiles;
+	QList<TileType> tiles;
 	for (int i = 0, x = 0; i < data.size(); ++i, ++x)
 	{
 		switch (data.at(i))
@@ -62,7 +62,7 @@ Level::Level(QByteArray data) : width_(0), height_(0), steps_(0), pushes_(0)
 		}
 	}
 
-	QVector<Tile> line;
+	QVector<TileType> line;
 	line.fill(OUTSIDE, height_);
 	board_.fill(line, width_);
 	bool lineHasWall = false;
