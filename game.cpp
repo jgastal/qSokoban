@@ -69,15 +69,13 @@ void Game::changeCollection(QString name)
 {
 	if (name.isEmpty() || (currentCollection_ && currentCollection_->objectName() == name))
 		return;
+	if (currentCollection_)
+		disconnect(currentCollection_);
 	currentCollection_ = loadCollection(name);
 	settings->setValue("currentCollection", name);
 	currentCollection_->setMaxUnlockedLevel(settings->value(name, 0).toInt());
 	currentCollection_->setCurrentLevel(settings->value(name, 0).toInt());
-	disconnect(currentCollection_);
 	connect(currentCollection_, &LevelCollection::unlockedLevelChanged, this, &Game::saveSettings);
-
-	connect(currentCollection_->currentLevel(), &Level::levelCompleted, currentCollection_, &LevelCollection::unlockNextLevel);
-	connect(currentCollection_->currentLevel(), &Level::levelCompleted, currentCollection_, &LevelCollection::nextLevel);
 	emit currentCollectionChanged();
 }
 

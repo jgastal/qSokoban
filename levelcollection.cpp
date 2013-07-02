@@ -58,7 +58,10 @@ void LevelCollection::setMaxUnlockedLevel(int level)
 
 void LevelCollection::setCurrentLevel(int level)
 {
+	disconnect(levels_.at(currentLevel_));
 	currentLevel_ = level;
+	connect(levels_.at(currentLevel_), &Level::levelCompleted, this, &LevelCollection::unlockNextLevel);
+	connect(levels_.at(currentLevel_), &Level::levelCompleted, this, &LevelCollection::nextLevel);
 	emit currentLevelChanged();
 	levels_.at(currentLevel_)->reset();
 	//Making sure next button's state is recalculated
@@ -73,11 +76,7 @@ void LevelCollection::unlockNextLevel()
 
 void LevelCollection::nextLevel()
 {
-	++currentLevel_;
-	emit currentLevelChanged();
-	levels_.at(currentLevel_)->reset();
-	//Making sure next button's state is recalculated
-	emit unlockedLevelChanged();
+	setCurrentLevel(++currentLevel_);
 }
 
 void LevelCollection::previousLevel()
