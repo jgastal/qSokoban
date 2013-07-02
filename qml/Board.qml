@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import Level 1.0
 
 Item {
 	focus: true
@@ -34,7 +35,12 @@ Item {
 			Image {
 				width: tileSize
 				height: tileSize
-				source: model.display
+				source: switch(model.display) {
+					case Level.WALL: return "qrc:/images/wall.png"
+					case Level.FLOOR: return "qrc:/images/floor.png"
+					case Level.BOX_DESTINATION: return "qrc:/images/box_destination.png"
+					case Level.OUTSIDE: return "qrc:/images/outside.png"
+				}
 			}
 		}
 	}

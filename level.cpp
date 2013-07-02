@@ -197,19 +197,7 @@ QVariant Level::data(const QModelIndex &index, int role) const
 	y = index.row() / width_;
 	if (role != Qt::DisplayRole)
 		return QVariant();
-	switch(board_[x][y])
-	{
-		case WALL:
-			return QVariant("qrc:/images/wall.png");
-		case FLOOR:
-			return QVariant("qrc:/images/floor.png");
-		case BOX_DESTINATION:
-			return QVariant("qrc:/images/box_destination.png");
-		case OUTSIDE:
-			return QVariant("qrc:/images/outside.png");
-		case NEW_ROW:
-			return QVariant();
-	}
+	return board_[x][y];
 }
 
 void Level::undo()

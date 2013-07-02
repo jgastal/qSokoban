@@ -18,14 +18,8 @@ class Level : public QAbstractListModel
 	Q_PROPERTY(int steps MEMBER steps_ NOTIFY steped);
 	Q_PROPERTY(int pushes MEMBER pushes_ NOTIFY pushed);
 	Q_PROPERTY(bool canUndo READ canUndo NOTIFY undoStackChanged);
+	Q_ENUMS(TileType)
 
-	enum TileType {
-		WALL,
-		FLOOR,
-		BOX_DESTINATION,
-		OUTSIDE, //Out of board
-		NEW_ROW
-	};
 	struct Movement {
 		int mandx, mandy;
 		int boxdx, boxdy;
@@ -33,6 +27,13 @@ class Level : public QAbstractListModel
 	};
 
 	public:
+		enum TileType {
+			WALL,
+			FLOOR,
+			BOX_DESTINATION,
+			OUTSIDE, //Out of board
+			NEW_ROW
+		};
 		Level();
 		Level(QByteArray data);
 		QByteArray serialize() const;
