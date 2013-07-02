@@ -42,7 +42,7 @@ Level::Level(QByteArray data) : width_(0), height_(0), steps_(0), pushes_(0)
 				tiles.append(BOX_DESTINATION);
 				break;
 			case '+':
-				tiles.append(FLOOR);
+				tiles.append(BOX_DESTINATION);
 				manPos_.rx() = x;
 				manPos_.ry() = height_;
 				break;
