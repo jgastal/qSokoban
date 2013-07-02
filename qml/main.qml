@@ -61,7 +61,7 @@ ApplicationWindow {
 				text: game.currentCollection.objectName
 			}
 			Label {
-				text: "Level:" + game.currentCollection.levelNumber
+				text: "Level:" + game.currentCollection.levelNumber + "/" + game.currentCollection.numberOfLevels
 			}
 			Label {
 				text: "Steps:" + currentLevel.steps

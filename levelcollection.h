@@ -10,6 +10,7 @@ class LevelCollection : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(int levelNumber MEMBER currentLevel_ NOTIFY currentLevelChanged);
+	Q_PROPERTY(int numberOfLevels READ numberOfLevels CONSTANT);
 	Q_PROPERTY(Level *currentLevel READ currentLevel NOTIFY currentLevelChanged);
 	Q_PROPERTY(bool nextLevelUnlocked READ nextLevelUnlocked NOTIFY unlockedLevelChanged);
 	Q_PROPERTY(bool hasPreviousLevel READ hasPreviousLevel NOTIFY currentLevelChanged);
@@ -24,6 +25,7 @@ class LevelCollection : public QObject
 		int maxUnlockedLevel() const;
 		void setMaxUnlockedLevel(int level);
 		void setCurrentLevel(int level);
+		int numberOfLevels() const;
 
 	public slots:
 		bool hasPreviousLevel();

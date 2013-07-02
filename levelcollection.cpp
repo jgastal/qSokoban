@@ -68,6 +68,11 @@ void LevelCollection::setCurrentLevel(int level)
 	emit unlockedLevelChanged();
 }
 
+int LevelCollection::numberOfLevels() const
+{
+	return levels_.size();
+}
+
 void LevelCollection::unlockNextLevel()
 {
 	++maxUnlockedLevel_;
