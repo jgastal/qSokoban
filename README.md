@@ -23,3 +23,4 @@ TODO
  * Figure out way to animate movement of boxes
  * Consider using Repeater instead of GridView to simplify Level's code
  * Save window position and size
+ * Implement Redo
