@@ -35,7 +35,7 @@ class Game : public QObject
 		QStringList collectionNames_;
 		QList<LevelCollection*> collections_;
 		LevelCollection *currentCollection_;
-		QSettings *settings;
+		QSettings *settings_;
 		static const QString curColKey;
 		static const QString levelsDir;
 };

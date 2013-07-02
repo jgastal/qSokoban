@@ -14,19 +14,19 @@ const QString Game::levelsDir = QString(":/levels/");
 Game::Game(QObject *parent) : QObject(parent), currentCollection_(NULL)
 {
 	QDir dir(levelsDir);
-	settings = new QSettings("Parabola", "qSokoban");
+	settings_ = new QSettings("Parabola", "qSokoban");
 
 	qmlRegisterType<Level>("Level", 1,0, "Level");
 	qmlRegisterType<LevelCollection>("LevelCollection", 1,0, "LevelCollection");
 
 	collectionNames_.append(dir.entryList());
 
-	changeCollection(settings->value("currentCollection", collectionNames_.first()).toString());
+	changeCollection(settings_->value("currentCollection", collectionNames_.first()).toString());
 }
 
 Game::~Game()
 {
-	delete settings;
+	delete settings_;
 	while (!collections_.isEmpty())
 		delete collections_.takeFirst();
 }
@@ -72,14 +72,14 @@ void Game::changeCollection(QString name)
 	if (currentCollection_)
 		disconnect(currentCollection_);
 	currentCollection_ = loadCollection(name);
-	settings->setValue("currentCollection", name);
-	currentCollection_->setMaxUnlockedLevel(settings->value(name, 0).toInt());
-	currentCollection_->setCurrentLevel(settings->value(name, 0).toInt());
+	settings_->setValue("currentCollection", name);
+	currentCollection_->setMaxUnlockedLevel(settings_->value(name, 0).toInt());
+	currentCollection_->setCurrentLevel(settings_->value(name, 0).toInt());
 	connect(currentCollection_, &LevelCollection::unlockedLevelChanged, this, &Game::saveSettings);
 	emit currentCollectionChanged();
 }
 
 void Game::saveSettings()
 {
-	settings->setValue(currentCollection_->objectName(), currentCollection_->maxUnlockedLevel());
+	settings_->setValue(currentCollection_->objectName(), currentCollection_->maxUnlockedLevel());
 }
