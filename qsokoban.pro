@@ -5,13 +5,15 @@ QT += qml quick
 HEADERS += \
     level.h \
     levelcollection.h \
-    game.h
+    game.h \
+    badleveldescription.h
 
 SOURCES += \
     level.cpp \
     main.cpp \
     levelcollection.cpp \
-    game.cpp
+    game.cpp \
+    badleveldescription.cpp
 
 RESOURCES += \
     data.qrc

@@ -4,13 +4,6 @@
 
 #define UNUSED __attribute__((unused))
 
-const char *BadLevelDescription::what() const throw()
-{
-	char *what = (char*)malloc(sizeof(char) * 34);
-	snprintf(what, 34, "Found unexepected character: '%c'", bad_);
-	return what;
-}
-
 const int Level::tileImageRole = Qt::UserRole + 1;
 
 Level::Level() : width_(0), height_(0), steps_(0), pushes_(0)

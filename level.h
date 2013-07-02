@@ -6,18 +6,7 @@
 #include <QByteArray>
 #include <QAbstractItemModel>
 #include <QStack>
-#include <stdexcept>
-#include <string>
-
-class BadLevelDescription : public std::exception
-{
-	public:
-		explicit BadLevelDescription(const char bad_char) : bad_(bad_char) {}
-		virtual const char* what() const throw();
-
-	private:
-		char bad_;
-};
+#include "badleveldescription.h"
 
 struct Movement {
 	int mandx, mandy;
