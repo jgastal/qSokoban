@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <QObject>
+#include <QVariant>
 #include <QStringList>
 
 class LevelCollection;
@@ -22,6 +23,8 @@ class Game : public QObject
 
 	public slots:
 		void changeCollection(QString name);
+		void saveSetting(QString key, QVariant value);
+		QVariant readSetting(QString key);
 
 	signals:
 		void collectionsChanged();

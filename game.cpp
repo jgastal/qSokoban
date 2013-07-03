@@ -79,6 +79,16 @@ void Game::changeCollection(QString name)
 	emit currentCollectionChanged();
 }
 
+void Game::saveSetting(QString key, QVariant value)
+{
+	settings_->setValue(key, value);
+}
+
+QVariant Game::readSetting(QString key)
+{
+	return settings_->value(key);
+}
+
 void Game::saveSettings()
 {
 	settings_->setValue(currentCollection_->objectName(), currentCollection_->maxUnlockedLevel());

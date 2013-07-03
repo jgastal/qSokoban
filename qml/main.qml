@@ -6,8 +6,10 @@ ApplicationWindow {
 	title: "qSokoban"
 	visible: true
 	objectName: "Window"
-	width: 800
-	height: 800
+	x: game.readSetting("x") ? game.readSetting("x") : 0
+	y: game.readSetting("y") ? game.readSetting("y") : 0
+	width: game.readSetting("width") ? game.readSetting("width") : 800
+	height: game.readSetting("height") ? game.readSetting("height") : 800
 	property var currentLevel: game.currentCollection.currentLevel
 	toolBar: ToolBar {
 		id: toolbar
@@ -85,5 +87,10 @@ ApplicationWindow {
 		level: currentLevel
 	}
 	Component.onCompleted: board.forceActiveFocus()
+	Component.onDestruction: {
+		game.saveSetting("x", x);
+		game.saveSetting("y", y);
+		game.saveSetting("width", width);
+		game.saveSetting("height", height);
+	}
 }
-
