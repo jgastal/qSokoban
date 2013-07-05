@@ -22,10 +22,15 @@ class Level : public QAbstractListModel
 	Q_PROPERTY(bool canUndo READ canUndo NOTIFY undoStackChanged);
 	Q_ENUMS(TileType)
 
-	struct Movement {
-		int mandx, mandy;
-		int boxdx, boxdy;
-		Box *box;
+	enum Movement {
+		STEP_UP,
+		STEP_DOWN,
+		STEP_LEFT,
+		STEP_RIGHT,
+		PUSH_UP,
+		PUSH_DOWN,
+		PUSH_LEFT,
+		PUSH_RIGHT
 	};
 
 	public:

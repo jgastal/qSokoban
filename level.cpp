@@ -133,25 +133,23 @@ QPoint Level::manPos() const
 void Level::setManPos(QPoint p)
 {
 	Movement mv;
+	bool push = false;
 	Box *b;
-	mv.box = NULL; //If it doesn't exist it must be NULL
+	int dx, dy;
 	if (board_[p.x()][p.y()] == WALL)
 		return;
+	dx = p.x() - manPos_.x();
+	dy = p.y() - manPos_.y();
 	if ((b = boxAt(p.x(), p.y())))
 	{
-		int dx, dy;
 		bool won = true;
-		dx = p.x() - manPos_.x();
-		dy = p.y() - manPos_.y();
 		if (board_[p.x() + dx][p.y() + dy] == WALL) //Object can't go past wall
 			return;
 		if (boxAt(p.x() + dx, p.y() + dy)) //Objects can't go into each other
 			return;
 		b->addToX(dx);
 		b->addToY(dy);
-		mv.box = b;
-		mv.boxdx = -1 * dx;
-		mv.boxdy = -1 * dy;
+		push = true;
 		++pushes_;
 		emit pushed();
 		for (int i = 0; Box *b = qobject_cast<Box*>(boxesPos_.value(i)); i++)
@@ -160,8 +158,28 @@ void Level::setManPos(QPoint p)
 		if (won)
 			emit levelCompleted();
 	}
-	mv.mandx = manPos_.x() - p.x();
-	mv.mandy = manPos_.y() - p.y();
+	if (push)
+	{
+		if (dx < 0)
+			mv = PUSH_LEFT;
+		else if (dx > 0)
+			mv = PUSH_RIGHT;
+		else if (dy > 0)
+			mv = PUSH_DOWN;
+		else if (dy < 0)
+			mv = PUSH_UP;
+	}
+	else
+	{
+		if (dx < 0)
+			mv = STEP_LEFT;
+		else if (dx > 0)
+			mv = STEP_RIGHT;
+		else if (dy > 0)
+			mv = STEP_DOWN;
+		else if (dy < 0)
+			mv = STEP_UP;
+	}
 	undoStack_.push(mv);
 	emit undoStackChanged();
 	manPos_.rx() = p.x();
@@ -201,18 +219,43 @@ QVariant Level::data(const QModelIndex &index, int role) const
 void Level::undo()
 {
 	Movement mv = undoStack_.pop();
-	manPos_.rx() += mv.mandx;
-	manPos_.ry() += mv.mandy;
+	int dx = 0, dy = 0;
+	switch (mv)
+	{
+		case STEP_UP:
+		case PUSH_UP:
+			dy = 1;
+			break;
+		case STEP_DOWN:
+		case PUSH_DOWN:
+			dy = -1;
+			break;
+		case STEP_LEFT:
+		case PUSH_LEFT:
+			dx = 1;
+			break;
+		case STEP_RIGHT:
+		case PUSH_RIGHT:
+			dx = -1;
+			break;
+	}
+
+	manPos_.rx() += dx;
+	manPos_.ry() += dy;
 	emit manMoved(manPos_);
 	--steps_;
 	emit steped();
-	if (mv.box)
+	if (mv < PUSH_UP)
 	{
-		mv.box->addToX(mv.boxdx);
-		mv.box->addToY(mv.boxdy);
-		--pushes_;
-		emit pushed();
+		emit undoStackChanged();
+		return;
 	}
+
+	Box *b = boxAt(manPos_.x() + dx * -2, manPos_.y() + dy * -2);
+	b->addToX(dx);
+	b->addToY(dy);
+	--pushes_;
+	emit pushed();
 	emit undoStackChanged();
 }
 
