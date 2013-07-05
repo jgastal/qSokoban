@@ -22,3 +22,6 @@ TODO
  * Figure out way to animate movement of boxes
  * Consider using Repeater instead of GridView to simplify Level's code
  * Implement Redo
+ * Refactor undo to use udrlUDRL notation(will make easier to save solutions).
+ * Allow saving solutions.
+ * Implement help(moves a box by one tile each time called) for levels for which the solution is known.
