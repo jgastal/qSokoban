@@ -1,6 +1,7 @@
 #include "level.h"
 #include <QDebug>
 #include <QHash>
+#include "box.h"
 
 Level::Level() : width_(0), height_(0), steps_(0), pushes_(0)
 {
@@ -15,14 +16,14 @@ Level::Level(QByteArray data) : width_(0), height_(0), steps_(0), pushes_(0)
 		{
 			case '*':
 				tiles.append(BOX_DESTINATION);
-				boxesPos_.append(QPoint(x, height_));
+				boxesPos_.append(new Box(x, height_, this));
 				break;
 			case '#':
 				tiles.append(WALL);
 				break;
 			case '$':
 				tiles.append(FLOOR);
-				boxesPos_.append(QPoint(x, height_));
+				boxesPos_.append(new Box(x, height_, this));
 				break;
 			case ' ':
 				tiles.append(FLOOR);
@@ -101,7 +102,7 @@ QByteArray Level::serialize() const
 				case FLOOR:
 					if (manPos_.x() == x && manPos_.y() == y)
 						data.append('@');
-					else if (boxesPos_.contains(QPoint(x, y)))
+					else if (boxAt(x, y))
 						data.append('$');
 					else
 						data.append(' ');
@@ -109,7 +110,7 @@ QByteArray Level::serialize() const
 				case BOX_DESTINATION:
 					if (manPos_.x() == x && manPos_.y() == y)
 						data.append('+');
-					else if (boxesPos_.contains(QPoint(x, y)))
+					else if (boxAt(x, y))
 						data.append('*');
 					else
 						data.append('.');
@@ -132,29 +133,29 @@ QPoint Level::manPos() const
 void Level::setManPos(QPoint p)
 {
 	Movement mv;
+	Box *b;
+	mv.box = NULL; //If it doesn't exist it must be NULL
 	if (board_[p.x()][p.y()] == WALL)
 		return;
-	if (boxesPos_.contains(p))
+	if ((b = boxAt(p.x(), p.y())))
 	{
 		int dx, dy;
-		int idx = boxesPos_.indexOf(p);
 		bool won = true;
 		dx = p.x() - manPos_.x();
 		dy = p.y() - manPos_.y();
 		if (board_[p.x() + dx][p.y() + dy] == WALL) //Object can't go past wall
 			return;
-		if (boxesPos_.contains(QPoint(p.x() + dx, p.y() + dy))) //Objects can't go into each other
+		if (boxAt(p.x() + dx, p.y() + dy)) //Objects can't go into each other
 			return;
-		boxesPos_[idx].rx() += dx;
-		boxesPos_[idx].ry() += dy;
-		mv.box = boxesPos_[idx];
+		b->addToX(dx);
+		b->addToY(dy);
+		mv.box = b;
 		mv.boxdx = -1 * dx;
 		mv.boxdy = -1 * dy;
-		emit boxMoved(boxesPos_);
 		++pushes_;
 		emit pushed();
-		for(auto p : boxesPos_)
-			if (board_[p.x()][p.y()] != BOX_DESTINATION)
+		for (int i = 0; Box *b = qobject_cast<Box*>(boxesPos_.value(i)); i++)
+			if (board_[b->x()][b->y()] != BOX_DESTINATION)
 				won = false;
 		if (won)
 			emit levelCompleted();
@@ -170,12 +171,9 @@ void Level::setManPos(QPoint p)
 	emit steped();
 }
 
-QVariantList Level::boxes() const
+QList<QObject*> Level::boxes() const
 {
-	QVariantList ret;
-	for(auto p : boxesPos_)
-		ret.append(QVariant(p));
-	return ret;
+	return boxesPos_;
 }
 
 bool Level::canUndo() const
@@ -203,17 +201,15 @@ QVariant Level::data(const QModelIndex &index, int role) const
 void Level::undo()
 {
 	Movement mv = undoStack_.pop();
-	int idx = boxesPos_.indexOf(mv.box);
 	manPos_.rx() += mv.mandx;
 	manPos_.ry() += mv.mandy;
 	emit manMoved(manPos_);
 	--steps_;
 	emit steped();
-	if (idx != -1)
+	if (mv.box)
 	{
-		boxesPos_[idx].rx() += mv.boxdx;
-		boxesPos_[idx].ry() += mv.boxdy;
-		emit boxMoved(boxesPos_);
+		mv.box->addToX(mv.boxdx);
+		mv.box->addToY(mv.boxdy);
 		--pushes_;
 		emit pushed();
 	}
@@ -224,4 +220,12 @@ void Level::reset()
 {
 	while (!undoStack_.isEmpty())
 		undo();
+}
+
+Box *Level::boxAt(int x, int y) const
+{
+	for (int i = 0; Box *b = qobject_cast<Box*>(boxesPos_.value(i)); i++)
+		if (b->x() == x && b->y() == y)
+			return b;
+	return NULL;
 }

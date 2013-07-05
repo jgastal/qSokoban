@@ -52,6 +52,8 @@ Item {
 			width: tileSize
 			height: tileSize
 			source: "qrc:/images/box.png"
+			Behavior on x { SmoothedAnimation { velocity: 400; } }
+			Behavior on y { SmoothedAnimation { velocity: 400; } }
 		}
 	}
 
