@@ -199,6 +199,16 @@ bool Level::canUndo() const
 	return !undoStack_.isEmpty();
 }
 
+int Level::steps() const
+{
+	return steps_;
+}
+
+int Level::pushes() const
+{
+	return pushes_;
+}
+
 int Level::rowCount(__attribute__((unused)) const QModelIndex &parent) const
 {
 	// Fucking grid view expects a list not a 2d array

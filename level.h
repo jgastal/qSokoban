@@ -17,8 +17,8 @@ class Level : public QAbstractListModel
 	Q_PROPERTY(QList<QObject*> boxes READ boxes CONSTANT)
 	Q_PROPERTY(int width MEMBER width_ NOTIFY sizeChanged)
 	Q_PROPERTY(int height MEMBER height_ NOTIFY sizeChanged)
-	Q_PROPERTY(int steps MEMBER steps_ NOTIFY steped);
-	Q_PROPERTY(int pushes MEMBER pushes_ NOTIFY pushed);
+	Q_PROPERTY(int steps READ steps NOTIFY steped);
+	Q_PROPERTY(int pushes READ pushes NOTIFY pushed);
 	Q_PROPERTY(bool canUndo READ canUndo NOTIFY undoStackChanged);
 	Q_ENUMS(TileType)
 
@@ -48,6 +48,8 @@ class Level : public QAbstractListModel
 		void setManPos(QPoint p);
 		QList<QObject*> boxes() const;
 		bool canUndo() const;
+		int steps() const;
+		int pushes() const;
 
 		//Item model methods
 		int rowCount(const QModelIndex &parent = QModelIndex()) const;
