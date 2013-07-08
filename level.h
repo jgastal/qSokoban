@@ -43,7 +43,6 @@ class Level : public QAbstractListModel
 		};
 		Level();
 		Level(QByteArray data);
-		QByteArray serialize() const;
 		QPoint manPos() const;
 		void setManPos(QPoint p);
 		QList<QObject*> boxes() const;

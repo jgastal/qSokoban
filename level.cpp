@@ -84,47 +84,6 @@ Level::Level(QByteArray data) : width_(0), height_(0), steps_(0), pushes_(0)
 	emit sizeChanged(width_, height_);
 }
 
-QByteArray Level::serialize() const
-{
-	QByteArray data;
-	for (int y = 0; y < height_; ++y)
-	{
-		for (int x = 0; x < width_; ++x)
-		{
-			switch (board_[x][y])
-			{
-				case OUTSIDE:
-					data.append(' ');
-					break;
-				case WALL:
-					data.append('#');
-					break;
-				case FLOOR:
-					if (manPos_.x() == x && manPos_.y() == y)
-						data.append('@');
-					else if (boxAt(x, y))
-						data.append('$');
-					else
-						data.append(' ');
-					break;
-				case BOX_DESTINATION:
-					if (manPos_.x() == x && manPos_.y() == y)
-						data.append('+');
-					else if (boxAt(x, y))
-						data.append('*');
-					else
-						data.append('.');
-					break;
-				case NEW_ROW:
-					qDebug() << "Will never happen";
-					break;
-			}
-		}
-		data.append("\n", 1);
-	}
-	return data;
-}
-
 QPoint Level::manPos() const
 {
 	return manPos_;
