@@ -74,7 +74,7 @@ void Level::move(Level::Direction d)
 		++pushes_;
 		emit pushed();
 		for (int i = 0; Box *b = qobject_cast<Box*>(board_->boxes().value(i)); i++)
-			if (board_->tileAt(QPoint(b->x(), b->y())) != Board::BOX_DESTINATION)
+			if (board_->tileAt(b->pos()) != Board::BOX_DESTINATION)
 				won = false;
 		if (won)
 			emit levelCompleted();

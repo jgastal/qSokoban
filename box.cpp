@@ -1,31 +1,22 @@
 #include "box.h"
 
-Box::Box(QObject *parent) : QObject(parent), x_(0), y_(0)
+Box::Box(int x, int y, QObject *parent) : QObject(parent), pos_(x, y)
 {
 }
 
-Box::Box(int x, int y, QObject *parent) : QObject(parent), x_(x), y_(y)
+QPoint Box::pos() const
 {
-}
-
-int Box::x() const
-{
-	return x_;
-}
-
-int Box::y() const
-{
-	return y_;
+	return pos_;
 }
 
 void Box::addToX(int dx)
 {
-	x_ += dx;
+	pos_.rx() += dx;
 	emit moved();
 }
 
 void Box::addToY(int dy)
 {
-	y_ += dy;
+	pos_.ry() += dy;
 	emit moved();
 }

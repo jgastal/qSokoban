@@ -31,8 +31,8 @@ Item {
 	Repeater {
 		model: board.boxes
 		Image {
-			x: modelData.x * tileSize
-			y: modelData.y * tileSize
+			x: modelData.pos.x * tileSize
+			y: modelData.pos.y * tileSize
 			width: tileSize
 			height: tileSize
 			source: "qrc:/images/box.png"

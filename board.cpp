@@ -107,7 +107,7 @@ Board::TileType Board::tileAt(QPoint p)
 Box *Board::boxAt(QPoint p)
 {
 	for (int i = 0; Box *b = qobject_cast<Box*>(boxes_.value(i)); i++)
-		if (b->x() == p.x() && b->y() == p.y())
+		if (b->pos() == p)
 			return b;
 	return NULL;
 }

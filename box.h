@@ -2,17 +2,15 @@
 #define BOX_H
 
 #include <QObject>
+#include <QPoint>
 
 class Box : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(int x READ x NOTIFY moved)
-	Q_PROPERTY(int y READ y NOTIFY moved)
+	Q_PROPERTY(QPoint pos READ pos NOTIFY moved)
 	public:
-		explicit Box(QObject *parent = 0);
 		explicit Box(int x, int y, QObject *parent = 0);
-		int x() const;
-		int y() const;
+		QPoint pos() const;
 		void addToX(int dx);
 		void addToY(int dy);
 
@@ -20,7 +18,7 @@ class Box : public QObject
 		void moved();
 
 	private:
-		int x_, y_;
+		QPoint pos_;
 };
 
 Q_DECLARE_METATYPE(QList<Box*>);
