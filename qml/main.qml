@@ -1,6 +1,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
+import Level 1.0
 
 ApplicationWindow {
 	title: "qSokoban"
@@ -83,9 +84,61 @@ ApplicationWindow {
 		id: board
 		objectName: "Board"
 		focus: true
-		tileSize: min(parent.width / currentLevel.width, parent.height / currentLevel.height)
-		level: currentLevel
+		tileSize: min(parent.width / currentLevel.board.width, parent.height / currentLevel.board.height)
+		board: currentLevel.board
+		Keys.onDownPressed: {
+			currentLevel.move(Level.Down);
+		}
+		Keys.onUpPressed: {
+			currentLevel.move(Level.Up);
+		}
+		Keys.onLeftPressed: {
+			currentLevel.move(Level.Left);
+		}
+		Keys.onRightPressed: {
+			currentLevel.move(Level.Right);
+		}
+		Keys.onPressed: {
+			if (event.key === Qt.Key_Z && event.modifiers === Qt.ControlModifier && currentLevel.canUndo)
+				currentLevel.undo();
+		}
 	}
+
+	Rectangle {
+		id: won
+		anchors.centerIn: board
+		width: 400
+		height: 100
+		color: "yellow"
+		visible: false
+		Connections {
+			target: currentLevel
+			onLevelCompleted: {
+				won.visible = true
+				hideTimer.running = true
+			}
+		}
+		transitions: Transition {
+			PropertyAnimation {
+				properties: "visible"
+				easing.type: Easing.InOutQuad;
+			}
+		}
+
+		Text {
+			anchors.centerIn: parent
+			color: "red"
+			text: "Level completed!"
+			font.pointSize: 30
+		}
+		Timer {
+			id: hideTimer
+			interval: 500
+			running: false
+			onTriggered: won.visible = false
+		}
+	}
+
 	Component.onCompleted: board.forceActiveFocus()
 	Component.onDestruction: {
 		game.saveSetting("x", x);

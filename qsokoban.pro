@@ -7,7 +7,8 @@ HEADERS += \
     levelcollection.h \
     game.h \
     badleveldescription.h \
-    box.h
+    box.h \
+    board.h
 
 SOURCES += \
     level.cpp \
@@ -15,7 +16,8 @@ SOURCES += \
     levelcollection.cpp \
     game.cpp \
     badleveldescription.cpp \
-    box.cpp
+    box.cpp \
+    board.cpp
 
 RESOURCES += \
     data.qrc

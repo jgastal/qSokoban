@@ -7,6 +7,7 @@
 #include <QSettings>
 #include "levelcollection.h"
 #include "level.h"
+#include "board.h"
 
 const QString Game::curColKey = QString("currentCollection");
 const QString Game::levelsDir = QString(":/levels/");
@@ -16,6 +17,7 @@ Game::Game(QObject *parent) : QObject(parent), currentCollection_(NULL)
 	QDir dir(levelsDir);
 	settings_ = new QSettings("Parabola", "qSokoban");
 
+	qmlRegisterType<Board>("Board", 1,0, "Board");
 	qmlRegisterType<Level>("Level", 1,0, "Level");
 	qmlRegisterType<LevelCollection>("LevelCollection", 1,0, "LevelCollection");
 

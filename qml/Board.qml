@@ -1,32 +1,16 @@
 import QtQuick 2.0
-import Level 1.0
+import Board 1.0
 
 Item {
 	focus: true
-	width: level.width * tileSize
-	height: level.height * tileSize
-	property var level
+	width: board.width * tileSize
+	height: board.height * tileSize
+	property var board
 	property int tileSize
-	Keys.onDownPressed: {
-		level.manPos.y += 1
-	}
-	Keys.onUpPressed: {
-		level.manPos.y -= 1
-	}
-	Keys.onLeftPressed: {
-		level.manPos.x -= 1
-	}
-	Keys.onRightPressed: {
-		level.manPos.x += 1
-	}
-	Keys.onPressed: {
-		if (event.key === Qt.Key_Z && event.modifiers === Qt.ControlModifier && level.canUndo)
-			level.undo();
-	}
 
 	GridView {
 		id: map
-		model: level
+		model: board
 		interactive: false
 		anchors.fill: parent
 		cellHeight: tileSize
@@ -36,16 +20,16 @@ Item {
 				width: tileSize
 				height: tileSize
 				source: switch(model.display) {
-					case Level.WALL: return "qrc:/images/wall.png"
-					case Level.FLOOR: return "qrc:/images/floor.png"
-					case Level.BOX_DESTINATION: return "qrc:/images/box_destination.png"
-					case Level.OUTSIDE: return "qrc:/images/outside.png"
+					case Board.WALL: return "qrc:/images/wall.png"
+					case Board.FLOOR: return "qrc:/images/floor.png"
+					case Board.BOX_DESTINATION: return "qrc:/images/box_destination.png"
+					case Board.OUTSIDE: return "qrc:/images/outside.png"
 				}
 			}
 		}
 	}
 	Repeater {
-		model: level.boxes
+		model: board.boxes
 		Image {
 			x: modelData.x * tileSize
 			y: modelData.y * tileSize
@@ -58,47 +42,12 @@ Item {
 	}
 
 	Image {
-		x: level.manPos.x * tileSize
-		y: level.manPos.y * tileSize
+		x: board.manPos.x * tileSize
+		y: board.manPos.y * tileSize
 		width: tileSize
 		height: tileSize
 		source: "qrc:/images/man.png"
 		Behavior on x { SmoothedAnimation { velocity: 400; } }
 		Behavior on y { SmoothedAnimation { velocity: 400; } }
-	}
-
-	Rectangle {
-		id: won
-		anchors.centerIn: parent
-		width: 400
-		height: 100
-		color: "yellow"
-		visible: false
-		Connections {
-			target: level
-			onLevelCompleted: {
-				won.visible = true
-				hideTimer.running = true
-			}
-		}
-		transitions: Transition {
-			PropertyAnimation {
-				properties: "visible"
-				easing.type: Easing.InOutQuad;
-			}
-		}
-
-		Text {
-			anchors.centerIn: parent
-			color: "red"
-			text: "Level completed!"
-			font.pointSize: 30
-		}
-		Timer {
-			id: hideTimer
-			interval: 500
-			running: false
-			onTriggered: won.visible = false
-		}
 	}
 }
