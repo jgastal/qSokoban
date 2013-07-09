@@ -20,6 +20,4 @@ class Box : public QObject
 		QPoint pos_;
 };
 
-Q_DECLARE_METATYPE(QList<Box*>);
-
 #endif // BOX_H
