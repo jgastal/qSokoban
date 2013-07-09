@@ -9,14 +9,8 @@ QPoint Box::pos() const
 	return pos_;
 }
 
-void Box::addToX(int dx)
+void Box::move(QPoint delta)
 {
-	pos_.rx() += dx;
-	emit moved();
-}
-
-void Box::addToY(int dy)
-{
-	pos_.ry() += dy;
+	pos_ += delta;
 	emit moved();
 }

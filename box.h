@@ -11,8 +11,7 @@ class Box : public QObject
 	public:
 		explicit Box(int x, int y, QObject *parent = 0);
 		QPoint pos() const;
-		void addToX(int dx);
-		void addToY(int dy);
+		void move(QPoint delta);
 
 	signals:
 		void moved();

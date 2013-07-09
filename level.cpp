@@ -68,8 +68,7 @@ void Level::move(Level::Direction d)
 			return;
 		if (board_->boxAt(boxDestination)) //Objects can't go into each other
 			return;
-		b->addToX(delta.x());
-		b->addToY(delta.y());
+		b->move(delta);
 		push = true;
 		++pushes_;
 		emit pushed();
@@ -128,8 +127,7 @@ void Level::undo()
 	}
 
 	Box *b = board_->boxAt(board_->manPos() + delta * -2);
-	b->addToX(delta.x());
-	b->addToY(delta.y());
+	b->move(delta);
 	--pushes_;
 	emit pushed();
 	emit undoStackChanged();
