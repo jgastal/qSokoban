@@ -1,11 +1,6 @@
 #include "levelcollection.h"
 #include <QDebug>
 
-LevelCollection::LevelCollection(QObject *parent)
-	: QObject(parent), currentLevel_(-1), maxUnlockedLevel_(-1)
-{
-}
-
 LevelCollection::LevelCollection(QString name, QByteArray collectionData, QObject *parent)
 	: QObject(parent), currentLevel_(0), maxUnlockedLevel_(0)
 {

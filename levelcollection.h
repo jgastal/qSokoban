@@ -16,7 +16,6 @@ class LevelCollection : public QObject
 	Q_PROPERTY(bool hasPreviousLevel READ hasPreviousLevel NOTIFY currentLevelChanged);
 
 	public:
-		LevelCollection(QObject *parent = 0);
 		LevelCollection(QString name, QByteArray collectionData, QObject *parent = 0);
 		const QList<Level*> levels() const;
 		Level *currentLevel() const;

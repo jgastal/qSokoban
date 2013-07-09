@@ -19,7 +19,7 @@ Game::Game(QObject *parent) : QObject(parent), currentCollection_(NULL)
 
 	qmlRegisterUncreatableType<Board>("Board", 1,0, "Board", "Board can't be instantiated from QML.");
 	qmlRegisterUncreatableType<Level>("Level", 1,0, "Level", "Level can't be instantiated from QML.");
-	qmlRegisterType<LevelCollection>("LevelCollection", 1,0, "LevelCollection");
+	qmlRegisterType<LevelCollection>();
 
 	collectionNames_.append(dir.entryList());
 
