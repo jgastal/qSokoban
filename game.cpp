@@ -15,7 +15,7 @@ const QString Game::levelsDir = QString(":/levels/");
 Game::Game(QObject *parent) : QObject(parent), currentCollection_(NULL)
 {
 	QDir dir(levelsDir);
-	settings_ = new QSettings("Parabola", "qSokoban");
+	settings_ = new QSettings("Parabola", "qSokoban", this);
 
 	qmlRegisterUncreatableType<Board>("Board", 1,0, "Board", "Board can't be instantiated from QML.");
 	qmlRegisterUncreatableType<Level>("Level", 1,0, "Level", "Level can't be instantiated from QML.");
@@ -24,13 +24,6 @@ Game::Game(QObject *parent) : QObject(parent), currentCollection_(NULL)
 	collectionNames_.append(dir.entryList());
 
 	changeCollection(settings_->value("currentCollection", collectionNames_.first()).toString());
-}
-
-Game::~Game()
-{
-	delete settings_;
-	while (!collections_.isEmpty())
-		delete collections_.takeFirst();
 }
 
 QStringList Game::collectionNames() const
@@ -48,7 +41,7 @@ LevelCollection *Game::loadCollection(QString name)
 	QByteArray colData = f.readAll();
 	if (!colData.isEmpty())
 	{
-		col = new LevelCollection(name, colData);
+		col = new LevelCollection(name, colData, this);
 		collections_.append(col);
 	}
 	else

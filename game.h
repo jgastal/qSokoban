@@ -16,7 +16,6 @@ class Game : public QObject
 	Q_PROPERTY(LevelCollection *currentCollection READ currentCollection NOTIFY currentCollectionChanged);
 	public:
 		explicit Game(QObject *parent = 0);
-		virtual ~Game();
 		QStringList collectionNames() const;
 		LevelCollection *currentCollection() const;
 		int currentCollectionIndex() const;

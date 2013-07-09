@@ -1,11 +1,13 @@
 #include "levelcollection.h"
 #include <QDebug>
 
-LevelCollection::LevelCollection()  : currentLevel_(-1), maxUnlockedLevel_(-1)
+LevelCollection::LevelCollection(QObject *parent)
+	: QObject(parent), currentLevel_(-1), maxUnlockedLevel_(-1)
 {
 }
 
-LevelCollection::LevelCollection(QString name, QByteArray collectionData) : currentLevel_(0), maxUnlockedLevel_(0)
+LevelCollection::LevelCollection(QString name, QByteArray collectionData, QObject *parent)
+	: QObject(parent), currentLevel_(0), maxUnlockedLevel_(0)
 {
 	setObjectName(name);
 
@@ -14,16 +16,10 @@ LevelCollection::LevelCollection(QString name, QByteArray collectionData) : curr
 		int separator = collectionData.indexOf('\0');
 		if (separator == -1)
 			break; //No more levels
-		Level *l = new Level(collectionData.left(separator));
+		Level *l = new Level(collectionData.left(separator), this);
 		levels_.append(l);
 		collectionData.remove(0, separator + 1);
 	}
-}
-
-LevelCollection::~LevelCollection()
-{
-	while (!levels_.isEmpty())
-		delete levels_.takeFirst();
 }
 
 const QList<Level *> LevelCollection::levels() const

@@ -4,7 +4,8 @@
 #include "box.h"
 #include "board.h"
 
-Level::Level(QByteArray data) : steps_(0), pushes_(0)
+Level::Level(QByteArray data, QObject *parent)
+	: QObject(parent), steps_(0), pushes_(0)
 {
 	board_ = new Board(data, this);
 }
