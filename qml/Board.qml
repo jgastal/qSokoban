@@ -8,23 +8,21 @@ Item {
 	property var board
 	property int tileSize
 
-	GridView {
+	Repeater {
 		id: map
-		model: board
-		interactive: false
+		model: board.width * board.height
 		anchors.fill: parent
-		cellHeight: tileSize
-		cellWidth: tileSize
-		delegate: Item {
-			Image {
-				width: tileSize
-				height: tileSize
-				source: switch(model.display) {
-					case Board.WALL: return "qrc:/images/wall.png"
-					case Board.FLOOR: return "qrc:/images/floor.png"
-					case Board.BOX_DESTINATION: return "qrc:/images/box_destination.png"
-					case Board.OUTSIDE: return "qrc:/images/outside.png"
-				}
+		property var tiles: board.tiles()
+		Image {
+			x: index % board.width * tileSize
+			y: Math.floor(index / board.width) * tileSize
+			width: tileSize
+			height: tileSize
+			source: switch(map.tiles[index]) {
+				case Board.WALL: return "qrc:/images/wall.png"
+				case Board.FLOOR: return "qrc:/images/floor.png"
+				case Board.BOX_DESTINATION: return "qrc:/images/box_destination.png"
+				case Board.OUTSIDE: return "qrc:/images/outside.png"
 			}
 		}
 	}

@@ -2,12 +2,12 @@
 #include "box.h"
 #include "badleveldescription.h"
 
-Board::Board(QObject *parent) : QAbstractListModel(parent), width_(0), height_(0)
+Board::Board(QObject *parent) : QObject(parent), width_(0), height_(0)
 {
 }
 
 Board::Board(QByteArray data, QObject *parent)
-	: QAbstractListModel(parent), width_(0), height_(0)
+	: QObject(parent), width_(0), height_(0)
 {
 	bool lineHasWall = false;
 
@@ -80,7 +80,7 @@ int Board::height()
 
 Board::TileType Board::tileAt(QPoint p)
 {
-	return tiles_.at(p.y() * width_ + p.x());
+	return (TileType)tiles_.at(p.y() * width_ + p.x());
 }
 
 Box *Board::boxAt(QPoint p)
@@ -89,6 +89,11 @@ Box *Board::boxAt(QPoint p)
 		if (b->pos() == p)
 			return b;
 	return NULL;
+}
+
+QList<int> Board::tiles() const
+{
+	return tiles_;
 }
 
 QPoint Board::manPos() const
@@ -100,17 +105,4 @@ void Board::setManPos(QPoint p)
 {
 	manPos_ = p;
 	emit manMoved();
-}
-
-int Board::rowCount(const QModelIndex &parent) const
-{
-	(void)parent;
-	return tiles_.size();
-}
-
-QVariant Board::data(const QModelIndex &index, int role) const
-{
-	if (role != Qt::DisplayRole)
-		return QVariant();
-	return tiles_.at(index.row());
 }

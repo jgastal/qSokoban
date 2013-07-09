@@ -1,13 +1,13 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include <QAbstractListModel>
+#include <QObject>
 #include <QPoint>
 #include <QByteArray>
 
 class Box;
 
-class Board : public QAbstractListModel
+class Board : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(QPoint manPos MEMBER manPos_ NOTIFY manMoved)
@@ -35,8 +35,7 @@ class Board : public QAbstractListModel
 		QPoint manPos() const;
 		void setManPos(QPoint p);
 
-		int rowCount(const QModelIndex &parent) const;
-		QVariant data(const QModelIndex &index, int role) const;
+		Q_INVOKABLE QList<int> tiles() const;
 
 	signals:
 		void sizeChanged();
@@ -46,7 +45,7 @@ class Board : public QAbstractListModel
 		int width_, height_;
 		QPoint manPos_;
 		QList<QObject*> boxes_;
-		QList<TileType> tiles_;
+		QList<int> tiles_;
 };
 
 Q_DECLARE_METATYPE(Board*);
