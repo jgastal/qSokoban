@@ -2,10 +2,6 @@
 #include "box.h"
 #include "badleveldescription.h"
 
-Board::Board(QObject *parent) : QObject(parent), width_(0), height_(0)
-{
-}
-
 Board::Board(QByteArray data, QObject *parent)
 	: QObject(parent), width_(0), height_(0)
 {

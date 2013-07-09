@@ -24,7 +24,6 @@ class Board : public QObject
 			OUTSIDE //Out of board
 		};
 
-		explicit Board(QObject *parent = 0);
 		explicit Board(QByteArray data, QObject *parent = 0);
 		QList<QObject*> boxes();
 		int width();

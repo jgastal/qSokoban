@@ -38,7 +38,6 @@ class Level : public QObject
 			Left,
 			Right
 		};
-		Level();
 		Level(QByteArray data);
 		Board *board() const;
 		bool canUndo() const;
