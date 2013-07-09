@@ -1,7 +1,6 @@
 #include "board.h"
 #include "box.h"
 #include "badleveldescription.h"
-#include <QDebug>
 
 Board::Board(QObject *parent) : QAbstractListModel(parent), width_(0), height_(0)
 {
