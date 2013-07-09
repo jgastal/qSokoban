@@ -46,7 +46,7 @@ class Board : public QAbstractListModel
 		int width_, height_;
 		QPoint manPos_;
 		QList<QObject*> boxes_;
-		QVector<QVector<TileType>> tiles_;
+		QList<TileType> tiles_;
 };
 
 Q_DECLARE_METATYPE(Board*);
