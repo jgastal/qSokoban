@@ -21,8 +21,7 @@ class Board : public QAbstractListModel
 			WALL,
 			FLOOR,
 			BOX_DESTINATION,
-			OUTSIDE, //Out of board
-			NEW_ROW
+			OUTSIDE //Out of board
 		};
 
 		explicit Board(QObject *parent = 0);

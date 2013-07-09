@@ -10,76 +10,56 @@ Board::Board(QObject *parent) : QAbstractListModel(parent), width_(0), height_(0
 Board::Board(QByteArray data, QObject *parent)
 	: QAbstractListModel(parent), width_(0), height_(0)
 {
-	QList<TileType> tiles;
-	for (int i = 0, x = 0; i < data.size(); ++i, ++x)
+	QVector<TileType> line;
+	bool lineHasWall = false;
+
+	height_ = data.count('\n');
+	for (int idx = 0, last_idx = 0; (idx = data.indexOf("\n", idx + 1)) != -1; last_idx = idx)
+		width_ = width_ > idx - last_idx ? width_ : idx - last_idx;
+
+
+	line.fill(OUTSIDE, height_);
+	tiles_.fill(line, width_);
+	for (int i = 0, x = 0, y = 0; i < data.size(); ++i, ++x)
 	{
 		switch (data.at(i))
 		{
 			case '*':
-				tiles.append(BOX_DESTINATION);
-				boxes_.append(new Box(x, height_, this));
+				tiles_[x][y] = BOX_DESTINATION;
+				boxes_.append(new Box(x, y, this));
 				break;
 			case '#':
-				tiles.append(WALL);
-				break;
-			case '$':
-				tiles.append(FLOOR);
-				boxes_.append(new Box(x, height_, this));
-				break;
-			case ' ':
-				tiles.append(FLOOR);
-				break;
-			case '@':
-				tiles.append(FLOOR);
-				manPos_.rx() = x;
-				manPos_.ry() = height_;
-				break;
-			case '\n':
-				++height_;
-				width_ = width_ >= x ? width_ : x;
-				x = -1;
-				tiles.append(NEW_ROW);
-				break;
-			case '.':
-				tiles.append(BOX_DESTINATION);
-				break;
-			case '+':
-				tiles.append(BOX_DESTINATION);
-				manPos_.rx() = x;
-				manPos_.ry() = height_;
-				break;
-			default:
-				throw BadLevelDescription(data.at(i));
-		}
-	}
-
-	QVector<TileType> line;
-	line.fill(OUTSIDE, height_);
-	tiles_.fill(line, width_);
-	bool lineHasWall = false;
-	for (int i = 0, x = 0, y = 0; i < tiles.size(); ++i, ++x)
-	{
-		switch (tiles.at(i))
-		{
-			case FLOOR:
-				if (lineHasWall) //TODO doesn't account for OUTSIDE in middle of line
-					tiles_[x][y] = FLOOR;
-				break;
-			case WALL:
 				tiles_[x][y] = WALL;
 				lineHasWall = true;
 				break;
-			case BOX_DESTINATION:
-				tiles_[x][y] = BOX_DESTINATION;
+			case '$':
+				tiles_[x][y] = FLOOR;
+				boxes_.append(new Box(x, y, this));
 				break;
-			case NEW_ROW:
-				x = -1;
+			case ' ':
+				if (lineHasWall) //TODO doesn't account for OUTSIDE in middle of line
+					tiles_[x][y] = FLOOR;
+				break;
+			case '@':
+				tiles_[x][y] = FLOOR;
+				manPos_.rx() = x;
+				manPos_.ry() = y;
+				break;
+			case '\n':
 				++y;
+				x = -1;
 				lineHasWall = false;
 				break;
-			case OUTSIDE:
-				qDebug() << "Will never happen";
+			case '.':
+				tiles_[x][y] = BOX_DESTINATION;
 				break;
+			case '+':
+				tiles_[x][y] = BOX_DESTINATION;
+				manPos_.rx() = x;
+				manPos_.ry() = y;
+				break;
+			default:
+				throw BadLevelDescription(data.at(i));
 		}
 	}
 }
