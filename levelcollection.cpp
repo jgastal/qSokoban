@@ -6,6 +6,7 @@ LevelCollection::LevelCollection(QString name, QByteArray collectionData, QObjec
 {
 	setObjectName(name);
 
+	collectionData.replace(QByteArray::fromRawData("\n\0\n", 3), QByteArray::fromRawData("\0", 1));
 	while (!collectionData.isEmpty())
 	{
 		int separator = collectionData.indexOf('\0');

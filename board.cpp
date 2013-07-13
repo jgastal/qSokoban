@@ -7,9 +7,9 @@ Board::Board(QByteArray data, QObject *parent)
 {
 	bool lineHasWall = false;
 
-	height_ = data.count('\n');
+	height_ = data.count('\n') + 1;
 	for (int idx = 0, last_idx = 0; (idx = data.indexOf("\n", idx + 1)) != -1; last_idx = idx)
-		width_ = width_ > idx - last_idx ? width_ : idx - last_idx;
+		width_ = width_ > idx - last_idx - 1 ? width_ : idx - last_idx - 1;
 
 	for (int i = 0, x = 0, y = 0; i < data.size(); ++i, ++x)
 	{
