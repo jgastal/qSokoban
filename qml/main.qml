@@ -82,6 +82,7 @@ ApplicationWindow {
 
 	Board {
 		id: board
+		anchors.centerIn: parent
 		objectName: "Board"
 		focus: true
 		tileSize: min(parent.width / currentLevel.board.width, parent.height / currentLevel.board.height)
