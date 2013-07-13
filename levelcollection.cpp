@@ -50,6 +50,11 @@ void LevelCollection::setMaxUnlockedLevel(int level)
 
 void LevelCollection::setCurrentLevel(int level)
 {
+	if (currentLevel_ == levels_.size())
+	{
+		emit collectionCompleted();
+		return;
+	}
 	disconnect(levels_.at(currentLevel_));
 	currentLevel_ = level;
 	connect(levels_.at(currentLevel_), &Level::levelCompleted, this, &LevelCollection::unlockNextLevel);

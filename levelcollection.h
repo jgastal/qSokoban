@@ -32,6 +32,7 @@ class LevelCollection : public QObject
 		void previousLevel();
 
 	signals:
+		void collectionCompleted();
 		void currentLevelChanged();
 		void unlockedLevelChanged();
 
