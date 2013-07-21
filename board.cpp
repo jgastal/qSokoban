@@ -57,6 +57,8 @@ Board::Board(QByteArray data, QObject *parent)
 				throw BadLevelDescription(data.at(i));
 		}
 	}
+	for (int i = tiles_.size(); i < width_ * height_; i++)
+		tiles_.append(OUTSIDE);
 }
 
 QList<QObject *> Board::boxes()
