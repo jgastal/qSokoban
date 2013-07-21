@@ -18,7 +18,6 @@ TODO
  * Handle empty spaces in between walls as OUTSIDE
  * Handle reaching the end of the collection
  * Allow saving position of a given level
- * Implement Redo
  * Allow saving solutions.
  * Implement help(moves a box by one tile each time called) for levels for which the solution is known.
  * When changing levels, board is redrawn before new tiles are available, if the new level is larger this results in undefined tiles

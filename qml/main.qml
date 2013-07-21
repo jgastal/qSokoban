@@ -12,6 +12,7 @@ ApplicationWindow {
 	width: game.readSetting("width") ? game.readSetting("width") : 800
 	height: game.readSetting("height") ? game.readSetting("height") : 800
 	property var currentLevel: game.currentCollection.currentLevel
+	property var undoStack: currentLevel.undoStack
 	toolBar: ToolBar {
 		id: toolbar
 
@@ -20,16 +21,26 @@ ApplicationWindow {
 				text: "Reset"
 				iconName: "edit-clear"
 				iconSource: "qrc:/images/edit-clear.png"
-				onClicked: currentLevel.reset()
+				enabled: undoStack.canUndo
+				onClicked: undoStack.reset()
 			}
 
 			ToolButton {
 				text: "Undo"
 				iconName: "edit-undo"
 				iconSource: "qrc:/images/edit-undo.png"
-				enabled: currentLevel.canUndo
-				onClicked: currentLevel.undo()
+				enabled: undoStack.canUndo
+				onClicked: undoStack.undo()
 			}
+
+			ToolButton {
+				text: "Redo"
+				iconName: "edit-redo"
+				iconSource: "qrc:/images/edit-redo.png"
+				enabled: undoStack.canRedo
+				onClicked: undoStack.redo()
+			}
+
 
 			ToolButton {
 				text: "Previous level"
@@ -105,8 +116,12 @@ ApplicationWindow {
 			currentLevel.move(Level.Right);
 		}
 		Keys.onPressed: {
-			if (event.key === Qt.Key_Z && event.modifiers === Qt.ControlModifier && currentLevel.canUndo)
-				currentLevel.undo();
+			if (event.key === Qt.Key_Z && event.modifiers === (Qt.ControlModifier | Qt.ShiftModifier)) {
+				if (undoStack.canRedo)
+					undoStack.redo();
+			} else if (event.key === Qt.Key_Z && event.modifiers === Qt.ControlModifier)
+				if (undoStack.canUndo)
+					undoStack.undo();
 		}
 	}
 

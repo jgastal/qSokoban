@@ -60,7 +60,7 @@ void LevelCollection::setCurrentLevel(int level)
 	connect(levels_.at(currentLevel_), &Level::levelCompleted, this, &LevelCollection::unlockNextLevel);
 	connect(levels_.at(currentLevel_), &Level::levelCompleted, this, &LevelCollection::nextLevel);
 	emit currentLevelChanged();
-	levels_.at(currentLevel_)->reset();
+	levels_.at(currentLevel_)->undoStack()->reset();
 	//Making sure next button's state is recalculated
 	emit unlockedLevelChanged();
 }

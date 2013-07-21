@@ -5,7 +5,7 @@
 #include "board.h"
 
 Level::Level(QByteArray data, QObject *parent)
-	: QObject(parent), steps_(0), pushes_(0)
+	: QObject(parent), steps_(0), pushes_(0), undoStack_(new MovementStack(this))
 {
 	board_ = new Board(data, this);
 }
@@ -13,11 +13,6 @@ Level::Level(QByteArray data, QObject *parent)
 Board *Level::board() const
 {
 	return board_;
-}
-
-bool Level::canUndo() const
-{
-	return !undoStack_.isEmpty();
 }
 
 int Level::steps() const
@@ -30,9 +25,14 @@ int Level::pushes() const
 	return pushes_;
 }
 
+MovementStack *Level::undoStack() const
+{
+	return undoStack_;
+}
+
 void Level::move(Level::Direction d)
 {
-	Movement mv;
+	MovementStack::Movement mv;
 	bool push = false;
 	Box *b;
 	QPoint destination;
@@ -76,62 +76,15 @@ void Level::move(Level::Direction d)
 			emit levelCompleted();
 	}
 	if (delta.x() < 0)
-		mv = push ? PUSH_LEFT : STEP_LEFT;
+		mv = push ? MovementStack::PUSH_LEFT : MovementStack::STEP_LEFT;
 	else if (delta.x() > 0)
-		mv = push ? PUSH_RIGHT : STEP_RIGHT;
+		mv = push ? MovementStack::PUSH_RIGHT : MovementStack::STEP_RIGHT;
 	else if (delta.y() > 0)
-		mv = push ? PUSH_DOWN : STEP_DOWN;
-	else if (delta.y() < 0)
-		mv = push ? PUSH_UP : STEP_UP;
-	undoStack_.push(mv);
-	emit undoStackChanged();
+		mv = push ? MovementStack::PUSH_DOWN : MovementStack::STEP_DOWN;
+	else// if (delta.y() < 0)
+		mv = push ? MovementStack::PUSH_UP : MovementStack::STEP_UP;
+	emit manMoved(mv);
 	board_->setManPos(destination);
 	++steps_;
 	emit steped();
-}
-
-void Level::undo()
-{
-	Movement mv = undoStack_.pop();
-	QPoint delta;
-	switch (mv)
-	{
-		case STEP_UP:
-		case PUSH_UP:
-			delta.ry() = 1;
-			break;
-		case STEP_DOWN:
-		case PUSH_DOWN:
-			delta.ry() = -1;
-			break;
-		case STEP_LEFT:
-		case PUSH_LEFT:
-			delta.rx() = 1;
-			break;
-		case STEP_RIGHT:
-		case PUSH_RIGHT:
-			delta.rx() = -1;
-			break;
-	}
-
-	board_->setManPos(board_->manPos() + delta);
-	--steps_;
-	emit steped();
-	if (mv < PUSH_UP)
-	{
-		emit undoStackChanged();
-		return;
-	}
-
-	Box *b = board_->boxAt(board_->manPos() + delta * -2);
-	b->move(delta);
-	--pushes_;
-	emit pushed();
-	emit undoStackChanged();
-}
-
-void Level::reset()
-{
-	while (!undoStack_.isEmpty())
-		undo();
 }

@@ -8,6 +8,7 @@
 #include "levelcollection.h"
 #include "level.h"
 #include "board.h"
+#include "movementstack.h"
 
 const QString Game::curColKey = QString("currentCollection");
 const QString Game::levelsDir = QString(":/levels/");
@@ -17,6 +18,7 @@ Game::Game(QObject *parent) : QObject(parent), currentCollection_(NULL)
 	QDir dir(levelsDir);
 	settings_ = new QSettings("Parabola", "qSokoban", this);
 
+	qmlRegisterUncreatableType<MovementStack>("MovementStack", 1,0, "MovementStack", "MovementStack can't be instantiated from QML.");
 	qmlRegisterUncreatableType<Board>("Board", 1,0, "Board", "Board can't be instantiated from QML.");
 	qmlRegisterUncreatableType<Level>("Level", 1,0, "Level", "Level can't be instantiated from QML.");
 	qmlRegisterType<LevelCollection>();
