@@ -23,6 +23,7 @@ Item {
 				case Board.FLOOR: return "qrc:/images/floor.png"
 				case Board.BOX_DESTINATION: return "qrc:/images/box_destination.png"
 				case Board.OUTSIDE: return "qrc:/images/outside.png"
+				default: return "";
 			}
 		}
 	}
