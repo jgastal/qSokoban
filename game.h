@@ -11,9 +11,9 @@ class QSettings;
 class Game : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(QStringList collections READ collectionNames NOTIFY collectionsChanged);
-	Q_PROPERTY(int currentCollectionIndex READ currentCollectionIndex NOTIFY currentCollectionChanged);
-	Q_PROPERTY(LevelCollection *currentCollection READ currentCollection NOTIFY currentCollectionChanged);
+	Q_PROPERTY(QStringList collections READ collectionNames NOTIFY collectionsChanged)
+	Q_PROPERTY(int currentCollectionIndex READ currentCollectionIndex NOTIFY currentCollectionChanged)
+	Q_PROPERTY(LevelCollection *currentCollection READ currentCollection NOTIFY currentCollectionChanged)
 	public:
 		explicit Game(QObject *parent = 0);
 		QStringList collectionNames() const;

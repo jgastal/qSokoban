@@ -15,11 +15,11 @@ class Board;
 class Level : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(int steps READ steps NOTIFY steped);
-	Q_PROPERTY(int pushes READ pushes NOTIFY pushed);
+	Q_PROPERTY(int steps READ steps NOTIFY steped)
+	Q_PROPERTY(int pushes READ pushes NOTIFY pushed)
 	Q_PROPERTY(Board* board READ board CONSTANT)
 	Q_PROPERTY(MovementStack* undoStack READ undoStack CONSTANT)
-	Q_ENUMS(Direction);
+	Q_ENUMS(Direction)
 
 	public:
 		enum Direction {

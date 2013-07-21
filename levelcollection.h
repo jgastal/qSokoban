@@ -9,11 +9,11 @@
 class LevelCollection : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(int levelNumber MEMBER currentLevel_ NOTIFY currentLevelChanged);
-	Q_PROPERTY(int numberOfLevels READ numberOfLevels CONSTANT);
-	Q_PROPERTY(Level *currentLevel READ currentLevel NOTIFY currentLevelChanged);
-	Q_PROPERTY(bool nextLevelUnlocked READ nextLevelUnlocked NOTIFY unlockedLevelChanged);
-	Q_PROPERTY(bool hasPreviousLevel READ hasPreviousLevel NOTIFY currentLevelChanged);
+	Q_PROPERTY(int levelNumber MEMBER currentLevel_ NOTIFY currentLevelChanged)
+	Q_PROPERTY(int numberOfLevels READ numberOfLevels CONSTANT)
+	Q_PROPERTY(Level *currentLevel READ currentLevel NOTIFY currentLevelChanged)
+	Q_PROPERTY(bool nextLevelUnlocked READ nextLevelUnlocked NOTIFY unlockedLevelChanged)
+	Q_PROPERTY(bool hasPreviousLevel READ hasPreviousLevel NOTIFY currentLevelChanged)
 
 	public:
 		LevelCollection(QString name, QByteArray collectionData, QObject *parent = 0);
