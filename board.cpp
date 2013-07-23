@@ -1,12 +1,11 @@
 #include "board.h"
 #include "box.h"
 #include "badleveldescription.h"
+#include <QList>
 
 Board::Board(QByteArray data, QObject *parent)
 	: QObject(parent), width_(0), height_(0)
 {
-	bool lineHasWall = false;
-
 	height_ = data.count('\n') + 1;
 	for (int idx = 0, last_idx = 0; (idx = data.indexOf("\n", idx + 1)) != -1; last_idx = idx)
 		width_ = width_ > idx - last_idx - 1 ? width_ : idx - last_idx - 1;
@@ -21,20 +20,16 @@ Board::Board(QByteArray data, QObject *parent)
 				break;
 			case '#':
 				tiles_.append(WALL);
-				lineHasWall = true;
 				break;
 			case '$':
-				tiles_.append(FLOOR);
+				tiles_.append(OUTSIDE);
 				boxes_.append(new Box(x, y, this));
 				break;
 			case ' ':
-				if (lineHasWall) //TODO doesn't account for OUTSIDE in middle of line
-					tiles_.append(FLOOR);
-				else
-					tiles_.append(OUTSIDE);
+				tiles_.append(OUTSIDE);
 				break;
 			case '@':
-				tiles_.append(FLOOR);
+				tiles_.append(OUTSIDE);
 				manPos_.rx() = x;
 				manPos_.ry() = y;
 				break;
@@ -43,7 +38,6 @@ Board::Board(QByteArray data, QObject *parent)
 					tiles_.append(OUTSIDE);
 				++y;
 				x = -1;
-				lineHasWall = false;
 				break;
 			case '.':
 				tiles_.append(BOX_DESTINATION);
@@ -59,6 +53,38 @@ Board::Board(QByteArray data, QObject *parent)
 	}
 	for (int i = tiles_.size(); i < width_ * height_; i++)
 		tiles_.append(OUTSIDE);
+
+	//flood fill from man with FLOOR
+	QList<QPoint> nodes;
+	nodes << manPos_;
+	for (int i = 0; i < nodes.size(); ++i)
+	{
+		QPoint p = nodes.at(i);
+		if (tileAt(p) == FLOOR)
+			continue;
+		for (int j = 0; tileAt(p + QPoint(j, 0)) != WALL; --j) //Check all tiles to the left that until a wall is hit
+		{
+			QPoint below = p + QPoint(j, 1);
+			QPoint above = p + QPoint(j, -1);
+			if (tileAt(p + QPoint(j, 0)) == OUTSIDE)
+				tiles_[p.y() * width_ + (p.x() + j)] = FLOOR;
+			if (!nodes.contains(below) && (tileAt(below) == OUTSIDE || tileAt(below) == BOX_DESTINATION))
+				nodes.push_back(below);
+			if (!nodes.contains(above) && (tileAt(above) == OUTSIDE || tileAt(above) == BOX_DESTINATION))
+				nodes.push_back(above);
+		}
+		for (int j = 1; tileAt(p + QPoint(j, 0)) != WALL; ++j) //Check all tiles to the right that until a wall is hit
+		{
+			QPoint below = p + QPoint(j, 1);
+			QPoint above = p + QPoint(j, -1);
+			if (tileAt(p + QPoint(j, 0)) == OUTSIDE)
+				tiles_[p.y() * width_ + (p.x() + j)] = FLOOR;
+			if (!nodes.contains(below) && (tileAt(below) == OUTSIDE || tileAt(below) == BOX_DESTINATION))
+				nodes.push_back(below);
+			if (!nodes.contains(above) && (tileAt(above) == OUTSIDE || tileAt(above) == BOX_DESTINATION))
+				nodes.push_back(above);
+		}
+	}
 }
 
 QList<QObject *> Board::boxes()
